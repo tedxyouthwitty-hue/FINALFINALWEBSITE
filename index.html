@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEDxWittyIntlSchoolYouth — Metamorphosis</title>
+<meta name="description" content="TEDxWittyIntlSchoolYouth — Metamorphosis. October 10, 2026.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Custom cursor (replaces default pointer) -->
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+<div class="cursor-label" id="cursorLabel" aria-hidden="true">View</div>
+
+<!-- ============================================= -->
+<!-- CORNER SCROLL BUTTERFLY LIFE-CYCLE (fixed, bottom-right, never blocks content) -->
+<!-- ============================================= -->
+<div class="morph-corner" aria-hidden="true">
+  <svg viewBox="0 0 100 100">
+    <g class="morph-stage" id="stage-egg">
+      <path d="M15,58 Q50,38 85,55 Q50,60 15,58 Z" class="stage-leaf"/>
+      <ellipse cx="50" cy="50" rx="13" ry="16" class="stage-fill"/>
+      <ellipse cx="45" cy="44" rx="3" ry="4" class="stage-highlight"/>
+    </g>
+    <g class="morph-stage" id="stage-caterpillar">
+      <path d="M20,60 C20,52 26,48 33,50 C36,44 44,44 47,50 C50,44 58,44 61,50 C64,44 72,44 75,50 C80,52 80,60 75,63 C72,68 64,68 61,63 C58,68 50,68 47,63 C44,68 36,68 33,63 C26,66 20,66 20,60 Z" class="stage-fill"/>
+    </g>
+    <g class="morph-stage" id="stage-chrysalis">
+      <path d="M50,20 C60,20 66,30 65,45 C64,58 60,72 50,80 C40,72 36,58 35,45 C34,30 40,20 50,20 Z" class="stage-fill"/>
+      <path d="M42,35 Q50,32 58,35" class="stage-line"/>
+      <path d="M40,48 Q50,45 60,48" class="stage-line"/>
+      <path d="M39,60 Q50,57 61,60" class="stage-line"/>
+    </g>
+    <g class="morph-stage" id="stage-butterfly">
+      <path d="M50,25 L50,78" class="stage-stroke"/>
+      <path d="M50,32 C46,20 30,14 20,20 C10,26 12,42 24,48 C34,53 46,48 50,38 Z" class="stage-fill"/>
+      <path d="M50,32 C54,20 70,14 80,20 C90,26 88,42 76,48 C66,53 54,48 50,38 Z" class="stage-fill"/>
+      <path d="M50,42 C47,36 34,34 27,42 C21,49 26,60 36,60 C44,60 49,52 50,44 Z" class="stage-fill"/>
+      <path d="M50,42 C53,36 66,34 73,42 C79,49 74,60 64,60 C56,60 51,52 50,44 Z" class="stage-fill"/>
+    </g>
+  </svg>
+  <div class="morph-label" id="morphLabel">Egg</div>
+</div>
+
+<!-- ============================================= -->
+<!-- NAV -->
+<!-- ============================================= -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">TEDx<span>WittyIntlSchoolYouth</span></a>
+    <div class="nav-links">
+      <a href="#theme">Theme</a>
+      <a href="#speakers">Speakers</a>
+      <a href="#sponsors">Sponsors</a>
+      <a href="#register" class="nav-cta">Register</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================= -->
+<!-- 1. HERO -->
+<!-- ============================================= -->
+<section id="hero" class="hero">
+  <div class="bg-fragments hero-bg" aria-hidden="true">
+    <svg viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+      <!-- EDITABLE: these fragment shapes are the "before metamorphosis" broken-apart motif -->
+      <polygon points="60,40 180,20 210,140 90,160" class="frag frag-1"></polygon>
+      <polygon points="620,60 740,90 700,210 580,180" class="frag frag-2"></polygon>
+      <polygon points="700,500 780,560 720,660 640,600" class="frag frag-3"></polygon>
+      <polygon points="40,560 130,600 90,700 10,660" class="frag frag-4"></polygon>
+      <circle cx="400" cy="400" r="180" class="frag-circle"></circle>
+    </svg>
+  </div>
+
+  <div class="hero-inner">
+    <img src="assets/logo.png" alt="TEDxWittyIntlSchoolYouth logo" class="hero-logo">
+    <p class="hero-tagline">Ideas worth spreading</p>
+    <h1 class="hero-theme">METAMORPHOSIS</h1>
+    <p class="hero-sub">TEDxWittyIntlSchoolYouth &nbsp;•&nbsp; 1st Edition</p>
+
+    <div class="countdown" id="countdown">
+      <div class="cd-unit"><span class="cd-num" id="cd-days">00</span><span class="cd-label">Days</span></div>
+      <div class="cd-unit"><span class="cd-num" id="cd-hours">00</span><span class="cd-label">Hours</span></div>
+      <div class="cd-unit"><span class="cd-num" id="cd-mins">00</span><span class="cd-label">Minutes</span></div>
+      <div class="cd-unit"><span class="cd-num" id="cd-secs">00</span><span class="cd-label">Seconds</span></div>
+    </div>
+    <p class="hero-date">October 10, 2026</p>
+
+    <a href="#register" class="btn-primary">Get tickets</a>
+  </div>
+  <div class="scroll-hint" aria-hidden="true">Scroll</div>
+</section>
+
+<!-- ============================================= -->
+<!-- 2 + 5. THEME (Express + About combined) -->
+<!-- ============================================= -->
+<section id="theme" class="section theme-section">
+  <div class="bg-fragments theme-bg" aria-hidden="true">
+    <svg viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+      <polygon points="700,80 780,140 730,220 650,170" class="frag frag-2"></polygon>
+      <circle cx="120" cy="650" r="120" class="frag-circle-outline"></circle>
+    </svg>
+  </div>
+  <div class="section-inner narrow">
+    <p class="eyebrow">This edition's theme</p>
+    <h2 class="section-title">Metamorphosis</h2>
+    <div class="theme-copy">
+      <!-- EDITABLE: replace this paragraph with your own wording any time -->
+      <p>Every idea worth sharing starts the same way — as something unfinished. A question without an answer. A habit someone decided to break. A student who stopped accepting things as they were and started asking what they could become.</p>
+      <p>Metamorphosis is that in-between moment made visible: the discomfort of outgrowing an old shape before the new one has fully formed. It's biological before it's metaphorical — nothing transforms without first coming apart. We chose this theme because every speaker on our stage, and every student in our audience, is somewhere in that process right now: unlearning, rebuilding, becoming someone they weren't a year ago.</p>
+      <p>This isn't a theme about arriving. It's about the change itself — messy, ongoing, and worth talking about honestly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- 6. WHAT IS TEDx -->
+<!-- ============================================= -->
+<section id="what-is-tedx" class="section">
+  <div class="section-inner">
+    <p class="eyebrow">The format</p>
+    <h2 class="section-title">What is TEDx?</h2>
+    <div class="two-col">
+      <div class="two-col-text">
+        <p>TED is a nonprofit devoted to spreading ideas, usually in the form of short, powerful talks. TEDx events are independently organized by local communities and licensed directly by TED, following the same format, spirit, and standards as the flagship TED conference — just built by and for the people closest to the ground.</p>
+        <p>The "x" stands for an independently organized event: TEDx events are produced under license, without TED's central organization directly involved in the content or curation, which means each one carries the voice and priorities of the community that built it.</p>
+      </div>
+      <div class="two-col-stat">
+        <span class="big-x">x</span>
+        <p class="stat-caption">independently organized TED event</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- 7. ABOUT TEDxWITTY INTL SCHOOL YOUTH -->
+<!-- ============================================= -->
+<section id="about-event" class="section about-section">
+  <div class="bg-fragments about-bg" aria-hidden="true">
+    <svg viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+      <polygon points="30,300 110,260 150,340 70,380" class="frag frag-3"></polygon>
+    </svg>
+  </div>
+  <div class="section-inner narrow">
+    <p class="eyebrow">Our event</p>
+    <h2 class="section-title">About TEDxWittyIntlSchoolYouth</h2>
+    <!-- EDITABLE: update this copy as your event details firm up -->
+    <p>This is the first edition of TEDxWittyIntlSchoolYouth — a youth-led TEDx event bringing student voices, original ideas, and honest conversation to a single stage. Organized entirely by students, for students, this event exists to prove that meaningful ideas don't wait for a certain age or title to be worth hearing.</p>
+    <p>As a first edition, this is the starting point of something we intend to build year after year: a platform where young people are trusted to speak seriously about the things that matter to them.</p>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- 8. SPEAKER LINEUP — suspense -->
+<!-- ============================================= -->
+<section id="speakers" class="section speakers-section">
+  <div class="section-inner center">
+    <p class="eyebrow">Speaker lineup</p>
+    <h2 class="reveal-text">Yet to be<br>revealed</h2>
+    <p class="reveal-sub">The ideas are ready. The names are coming.</p>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- OC PAGE / ORGANIZING COMMITTEE -->
+<!-- ============================================= -->
+<section id="oc" class="section">
+  <div class="section-inner">
+    <p class="eyebrow">Behind the event</p>
+    <h2 class="section-title">Organizing committee</h2>
+    <p class="oc-hint">Hover a name to see their photo</p>
+    <!-- EDITABLE: replace name/role text below. To add a real photo, put the image
+         in assets/ and add data-img="assets/yourfile.jpg" to the .oc-item div. -->
+    <div class="oc-list">
+      <div class="oc-item" data-name="Name" data-role="Role" data-img="">
+        <span class="oc-name">Name</span>
+        <span class="oc-role">Role</span>
+      </div>
+      <div class="oc-item" data-name="Name" data-role="Role" data-img="">
+        <span class="oc-name">Name</span>
+        <span class="oc-role">Role</span>
+      </div>
+      <div class="oc-item" data-name="Name" data-role="Role" data-img="">
+        <span class="oc-name">Name</span>
+        <span class="oc-role">Role</span>
+      </div>
+      <div class="oc-item" data-name="Name" data-role="Role" data-img="">
+        <span class="oc-name">Name</span>
+        <span class="oc-role">Role</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Floating image preview that follows the cursor when hovering an OC name -->
+<div class="oc-preview" id="ocPreview" aria-hidden="true">
+  <img id="ocPreviewImg" src="" alt="">
+  <div class="oc-preview-fallback" id="ocPreviewFallback">Photo coming soon</div>
+</div>
+
+<!-- ============================================= -->
+<!-- 9. SPONSORS (corner strip handled in nav/footer, this is the main row) -->
+<!-- ============================================= -->
+<section id="sponsors" class="section sponsors-section">
+  <div class="section-inner center">
+    <p class="eyebrow">With thanks to</p>
+    <h2 class="section-title">Our sponsors</h2>
+    <!-- EDITABLE: replace each .sponsor-slot div with <img src="assets/your-logo.png" alt="Sponsor name"> -->
+    <div class="sponsor-row">
+      <div class="sponsor-slot">Title sponsor</div>
+      <div class="sponsor-slot">Diamond sponsor</div>
+      <div class="sponsor-slot">Gold sponsor</div>
+      <div class="sponsor-slot">Silver sponsor</div>
+    </div>
+    <p class="sponsor-cta">Interested in partnering with us? <a href="#contact">Get in touch</a></p>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- 3. LOCATION -->
+<!-- ============================================= -->
+<section id="location" class="section">
+  <div class="section-inner">
+    <p class="eyebrow">Where to find us</p>
+    <h2 class="section-title">Location</h2>
+    <p class="location-note">Venue to be announced.</p>
+    <!-- EDITABLE: replace the src="" below with your Google Maps embed link — see README for instructions -->
+    <div class="map-placeholder">
+      <iframe
+        id="mapEmbed"
+        src=""
+        width="100%"
+        height="100%"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Event location map">
+      </iframe>
+      <div class="map-fallback">Map will appear here once the venue is confirmed.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- 4. TICKET / REGISTER -->
+<!-- ============================================= -->
+<section id="register" class="section register-section">
+  <div class="section-inner center">
+    <h2 class="section-title">Be there for it</h2>
+    <p class="register-sub">Seats are limited. Register your interest below.</p>
+    <!-- EDITABLE: replace the href="#" below with your Google Form / ticketing link — see README -->
+    <a href="#" id="ticketLink" class="btn-primary btn-large">Get tickets</a>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- PARTICLE / DUST TEXT — "METAMORPHOSIS" reforms as you move the cursor -->
+<!-- ============================================= -->
+<section class="particle-section" aria-hidden="true">
+  <canvas id="particleCanvas"></canvas>
+  <p class="particle-hint">Move your cursor</p>
+</section>
+
+<!-- ============================================= -->
+<!-- 10. CONTACT + FOOTER -->
+<!-- ============================================= -->
+<footer id="contact" class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/logo.png" alt="TEDxWittyIntlSchoolYouth logo" class="footer-logo">
+      <p class="footer-tag">Ideas worth spreading</p>
+    </div>
+    <div class="footer-contact">
+      <p class="footer-heading">Contact</p>
+      <a href="mailto:tedxwittyintlschool@gmail.com">tedxwittyintlschool@gmail.com</a>
+      <a href="https://instagram.com/tedxwittyintlschool" target="_blank" rel="noopener">@tedxwittyintlschool</a>
+    </div>
+    <div class="footer-sponsors">
+      <p class="footer-heading">Sponsors</p>
+      <!-- EDITABLE: small corner/footer sponsor placeholders -->
+      <div class="footer-sponsor-row">
+        <div class="sponsor-slot small">Logo</div>
+        <div class="sponsor-slot small">Logo</div>
+        <div class="sponsor-slot small">Logo</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>This independent TEDx event is operated under license from TED.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
