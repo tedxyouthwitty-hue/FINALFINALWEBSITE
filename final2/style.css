@@ -184,9 +184,12 @@ img { max-width: 100%; display: block; }
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 640px;
+  max-width: 1100px;
   margin: 0 auto;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hero-logo {
@@ -207,10 +210,11 @@ img { max-width: 100%; display: block; }
   font-family: var(--serif);
   font-size: clamp(2.5rem, 8vw, 5rem);
   letter-spacing: 0.03em;
-  margin: 0.5rem auto;
+  margin: 0.5rem 0;
   color: var(--white);
   text-align: center;
-  width: 100%;
+  width: max-content;
+  max-width: 100%;
 }
 
 .hero-sub {
@@ -758,30 +762,4 @@ body:not(.touch-device) button { cursor: none; }
   .morph-stage .stage-highlight {
     transition: none;
   }
-
-/* ---- Force-center fix for hero theme text ---- */
-.hero-inner {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  text-align: center;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.hero-theme {
-  font-family: var(--serif);
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  letter-spacing: 0.03em;
-  margin: 0.5rem 0;
-  color: var(--white);
-  text-align: center;
-
-  /* Make the actual word itself the centered element */
-  width: max-content;
-  max-width: 100%;
 }
