@@ -205,6 +205,8 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.03em;
   margin: 0.5rem 0;
   color: var(--white);
+   margin-right:auto;
+   margin-left:auto
 }
 
 .hero-sub {
