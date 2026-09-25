@@ -758,4 +758,19 @@ body:not(.touch-device) button { cursor: none; }
   .morph-stage .stage-highlight {
     transition: none;
   }
+/* ---- Force-center fix for hero theme text ---- */
+.hero-inner {
+  width: 100% !important;
+  max-width: 640px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+}
+
+.hero-theme {
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+}
 }
