@@ -758,7 +758,6 @@ body:not(.touch-device) button { cursor: none; }
   .morph-stage .stage-highlight {
     transition: none;
   }
-}
 
 /* ---- Force-center fix for hero theme text ---- */
 .hero-inner {
