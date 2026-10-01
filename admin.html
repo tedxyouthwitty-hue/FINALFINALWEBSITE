@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Admin — TEDxWittyIntlSchoolYouth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root{--bg:#000;--card:#0d0d0d;--card2:#151515;--line:#2a2a2a;--text:#fff;--muted:#8c8c8c;--red:#e62b1e;--green:#2ea44f;--amber:#d29922}
@@ -173,14 +175,13 @@ const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Xv9dLJJEGOG3Z3k_XeTdKA_X346sb7j
 const BUCKET = "payment-screenshots";
 const FUNCTION_URL = SUPABASE_URL + "/functions/v1/ticket-decision";
 
-/* Ticket template: put your blank ticket image at assets/ticket-template.png.
-   x / y are positions in pixels on the template image. */
+/* Ticket template (assets/ticket-template.png, 1872x608).
+   Positions are in pixels on the template. rotate: -90 = text runs bottom-to-top. */
 const TICKET = {
   template: "assets/ticket-template.png",
-  name: { x: 0.5, y: 0.55, size: 0.06, color: "#ffffff", align: "center", weight: "700" },
-  qty:  { x: 0.5, y: 0.68, size: 0.04, color: "#e62b1e", align: "center", weight: "700" },
-  id:   { x: 0.5, y: 0.78, size: 0.025, color: "#bbbbbb", align: "center", weight: "400" }
-  // x, y and size are fractions of the template width/height (0.5 = middle).
+  name: { x: 1512, y: 311, rotate: -90, maxLen: 530, size: 84, font: "Anton", weight: "400", color: "#ffffff", upper: true },
+  qty:  { x: 1570, y: 311, rotate: -90, maxLen: 500, size: 40, font: "Playfair Display", weight: "700", color: "#000000", upper: true },
+  id:   { x: 1712, y: 545, rotate: 0,   maxLen: 200, size: 15, font: "Arial", weight: "700", color: "#000000", upper: true }
 };
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
@@ -293,33 +294,29 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") closeDetail(
 function loadImage(src){
   return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src + "?v=" + Date.now(); });
 }
-function drawText(ctx, text, o, W, H){
-  ctx.font = `${o.weight} ${Math.round(o.size * W)}px Helvetica, Arial, sans-serif`;
-  ctx.fillStyle = o.color; ctx.textAlign = o.align; ctx.textBaseline = "middle";
-  let size = Math.round(o.size * W);
-  while (ctx.measureText(text).width > W * 0.85 && size > 10) { size -= 2; ctx.font = `${o.weight} ${size}px Helvetica, Arial, sans-serif`; }
-  ctx.fillText(text, o.x * W, o.y * H);
+function drawText(ctx, text, o){
+  if (o.upper) text = String(text).toUpperCase();
+  let size = o.size;
+  const setFont = () => ctx.font = `${o.weight} ${size}px "${o.font}", Impact, Arial, sans-serif`;
+  setFont();
+  while (ctx.measureText(text).width > o.maxLen && size > 10) { size -= 2; setFont(); }
+  ctx.save();
+  ctx.translate(o.x, o.y);
+  ctx.rotate((o.rotate || 0) * Math.PI / 180);
+  ctx.fillStyle = o.color; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillText(text, 0, 0);
+  ctx.restore();
 }
 async function makeTicket(r){
+  try { await Promise.all([document.fonts.load('400 84px "Anton"'), document.fonts.load('700 40px "Playfair Display"')]); } catch {}
+  const img = await loadImage(TICKET.template);
   const c = document.createElement("canvas"), ctx = c.getContext("2d");
-  let W, H;
-  try {
-    const img = await loadImage(TICKET.template);
-    W = c.width = img.naturalWidth; H = c.height = img.naturalHeight;
-    ctx.drawImage(img, 0, 0);
-  } catch {
-    // Fallback design if no template has been uploaded yet
-    W = c.width = 1600; H = c.height = 800;
-    ctx.fillStyle = "#000"; ctx.fillRect(0,0,W,H);
-    ctx.fillStyle = "#e62b1e"; ctx.fillRect(0,0,24,H);
-    ctx.font = "800 64px Helvetica, Arial"; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
-    ctx.fillStyle = "#e62b1e"; ctx.fillText("TEDx", 90, 140);
-    ctx.fillStyle = "#fff"; ctx.fillText("WittyIntlSchoolYouth", 90 + ctx.measureText("TEDx").width, 140);
-    ctx.font = "400 40px Georgia, serif"; ctx.fillStyle = "#bbb"; ctx.fillText("Metamorphosis · October 10, 2026", 90, 210);
-  }
-  drawText(ctx, r.full_name || "", TICKET.name, W, H);
-  drawText(ctx, `Admits ${r.ticket_quantity} ${r.ticket_quantity == 1 ? "person" : "people"}`, TICKET.qty, W, H);
-  drawText(ctx, `Ticket ID: ${shortId(r.id)}`, TICKET.id, W, H);
+  c.width = img.naturalWidth; c.height = img.naturalHeight;
+  ctx.drawImage(img, 0, 0);
+  const q = Number(r.ticket_quantity) || 1;
+  drawText(ctx, r.full_name || "", TICKET.name);
+  drawText(ctx, `Admits ${q} ${q === 1 ? "person" : "people"}`, TICKET.qty);
+  drawText(ctx, `ID ${shortId(r.id)}`, TICKET.id);
   return c.toDataURL("image/png");
 }
 
@@ -327,7 +324,8 @@ async function makeTicket(r){
 let ticketData = null;
 $("verifyBtn").onclick = async () => {
   $("rejectBox").classList.add("hidden");
-  ticketData = await makeTicket(current);
+  try { ticketData = await makeTicket(current); }
+  catch { toast("Could not load the ticket template", true); return; }
   $("ticketPreview").src = ticketData;
   $("verifyBox").classList.remove("hidden");
 };
