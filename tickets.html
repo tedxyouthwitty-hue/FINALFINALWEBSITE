@@ -3,14 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Get Tickets — TEDxWittyIntlSchoolYouth</title>
-<meta name="description" content="Ticket registration for TEDxWittyIntlSchoolYouth — Metamorphosis.">
+
+<meta
+  name="description"
+  content="Ticket registration for TEDxWittyIntlSchoolYouth — Metamorphosis."
+>
+
 <link rel="stylesheet" href="style.css">
 
 <!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+  /* =========================================================
+     TICKET PAGE
+     ========================================================= */
+
   .ticket-page {
     min-height: 100vh;
     background: #000;
@@ -22,6 +32,29 @@
     width: min(760px, 100%);
     margin: 0 auto;
   }
+
+  /* =========================================================
+     NAV LOGO
+     ========================================================= */
+
+  .ticket-page + * {
+    box-sizing: border-box;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-logo img {
+    width: 150px;
+    height: auto;
+    display: block;
+  }
+
+  /* =========================================================
+     TICKET HEADER
+     ========================================================= */
 
   .ticket-header {
     text-align: center;
@@ -46,12 +79,20 @@
     font-size: 15px;
   }
 
+  /* =========================================================
+     TICKET CARD
+     ========================================================= */
+
   .ticket-card {
     border: 1px solid rgba(255,255,255,.14);
     background: rgba(255,255,255,.025);
     padding: clamp(22px, 5vw, 42px);
     box-shadow: 0 20px 80px rgba(0,0,0,.45);
   }
+
+  /* =========================================================
+     PAYMENT / QR
+     ========================================================= */
 
   .payment-box {
     text-align: center;
@@ -64,14 +105,31 @@
     width: min(280px, 72vw);
     aspect-ratio: 1;
     margin: 0 auto 18px;
+
     display: grid;
     place-items: center;
+
     border: 2px dashed rgba(255,255,255,.35);
+
     background:
-      linear-gradient(45deg, rgba(255,255,255,.035) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.035) 75%),
-      linear-gradient(45deg, rgba(255,255,255,.035) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.035) 75%);
+      linear-gradient(
+        45deg,
+        rgba(255,255,255,.035) 25%,
+        transparent 25%,
+        transparent 75%,
+        rgba(255,255,255,.035) 75%
+      ),
+      linear-gradient(
+        45deg,
+        rgba(255,255,255,.035) 25%,
+        transparent 25%,
+        transparent 75%,
+        rgba(255,255,255,.035) 75%
+      );
+
     background-size: 28px 28px;
     background-position: 0 0, 14px 14px;
+
     color: rgba(255,255,255,.55);
     font-size: 20px;
     font-weight: 700;
@@ -87,6 +145,10 @@
     color: rgba(255,255,255,.62);
     font-size: 13px;
   }
+
+  /* =========================================================
+     FORM
+     ========================================================= */
 
   .ticket-form {
     display: grid;
@@ -108,10 +170,14 @@
   .field input {
     width: 100%;
     box-sizing: border-box;
+
     border: 1px solid rgba(255,255,255,.18);
+
     background: #080808;
     color: #fff;
+
     padding: 15px 16px;
+
     font: inherit;
     outline: none;
     border-radius: 0;
@@ -121,12 +187,19 @@
     border-color: #e62b1e;
   }
 
+  /* =========================================================
+     AMOUNT
+     ========================================================= */
+
   .amount-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     gap: 20px;
+
     padding: 17px 0;
+
     border-top: 1px solid rgba(255,255,255,.12);
     border-bottom: 1px solid rgba(255,255,255,.12);
   }
@@ -141,10 +214,17 @@
     font-weight: 700;
   }
 
+  /* =========================================================
+     UPLOAD
+     ========================================================= */
+
   .upload-box {
     position: relative;
+
     border: 1px dashed rgba(255,255,255,.28);
+
     padding: 24px 18px;
+
     text-align: center;
   }
 
@@ -155,9 +235,15 @@
 
   .upload-help {
     margin: 8px 0 0;
+
     font-size: 12px;
+
     color: rgba(255,255,255,.48);
   }
+
+  /* =========================================================
+     SUBMIT BUTTON
+     ========================================================= */
 
   .submit-btn {
     width: 100%;
@@ -171,36 +257,53 @@
     cursor: wait;
   }
 
-  .status-message {
+  /* =========================================================
+     MESSAGES
+     ========================================================= */
+
+  .form-message {
     display: none;
-    margin-top: 16px;
-    padding: 14px;
-    text-align: center;
+
+    margin-top: 18px;
+    padding: 15px 16px;
+
+    border: 1px solid rgba(255,255,255,.15);
+
     font-size: 13px;
     line-height: 1.5;
-    border: 1px solid rgba(255,255,255,.14);
+
+    text-align: center;
   }
 
-  .status-message.show {
+  .form-message.show {
     display: block;
   }
 
-  .status-message.success {
-    border-color: rgba(60, 200, 100, .4);
-    color: #8ff0ad;
+  .form-message.success {
+    border-color: rgba(70, 200, 120, .5);
+    color: #9ff0bd;
   }
 
-  .status-message.error {
-    border-color: rgba(230,43,30,.5);
-    color: #ff8178;
+  .form-message.error {
+    border-color: rgba(230, 43, 30, .5);
+    color: #ff8d84;
   }
+
+  /* =========================================================
+     BOTTOM NOTE
+     ========================================================= */
 
   .ticket-back {
     display: block;
+
     width: fit-content;
+
     margin: 28px auto 0;
+
     color: rgba(255,255,255,.6);
+
     text-decoration: none;
+
     font-size: 13px;
   }
 
@@ -210,13 +313,99 @@
 
   .interface-note {
     margin-top: 20px;
+
     text-align: center;
+
     font-size: 12px;
     line-height: 1.6;
+
     color: rgba(255,255,255,.42);
   }
 
+  /* =========================================================
+     CUSTOM CURSOR
+     ========================================================= */
+
+  body:not(.touch-device) {
+    cursor: none;
+  }
+
+  body:not(.touch-device) a,
+  body:not(.touch-device) button,
+  body:not(.touch-device) input,
+  body:not(.touch-device) label {
+    cursor: none;
+  }
+
+  .cursor-dot,
+  .cursor-ring,
+  .cursor-label {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    pointer-events: none;
+
+    z-index: 99999;
+
+    transform: translate(-50%, -50%);
+  }
+
+  .cursor-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #e62b1e;
+  }
+
+  .cursor-ring {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+
+    border: 1px solid #e62b1e;
+
+    transition:
+      width .25s ease,
+      height .25s ease,
+      background .25s ease;
+  }
+
+  .cursor-ring.hover {
+    width: 64px;
+    height: 64px;
+
+    background: rgba(230,43,30,.08);
+  }
+
+  .cursor-label {
+    font-size: .65rem;
+
+    letter-spacing: .05em;
+
+    color: #fff;
+
+    opacity: 0;
+
+    transition: opacity .2s ease;
+
+    white-space: nowrap;
+  }
+
+  .cursor-label.show {
+    opacity: 1;
+  }
+
+  /* =========================================================
+     MOBILE
+     ========================================================= */
+
   @media (max-width: 600px) {
+
     .ticket-page {
       padding: 105px 14px 50px;
     }
@@ -234,42 +423,118 @@
       flex-direction: column;
       gap: 5px;
     }
+
+    .nav-logo img {
+      width: 125px;
+    }
+
+    /* Hide custom cursor on touch devices */
+    .touch-device .cursor-dot,
+    .touch-device .cursor-ring,
+    .touch-device .cursor-label {
+      display: none;
+    }
   }
 </style>
 </head>
 
+
 <body>
 
+<!-- =========================================================
+     CUSTOM CURSOR
+     ========================================================= -->
+
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+<div class="cursor-label"></div>
+
+
+<!-- =========================================================
+     NAVIGATION
+     ========================================================= -->
+
 <nav class="nav">
+
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">TEDx<span>WittyIntlSchoolYouth</span></a>
+
+    <a href="index.html" class="nav-logo">
+      <img
+        src="assets/logo.png"
+        alt="TEDxWittyIntlSchoolYouth logo"
+      >
+    </a>
 
     <div class="nav-links">
-      <a href="index.html#theme">Theme</a>
-      <a href="index.html#speakers">Speakers</a>
-      <a href="index.html#sponsors">Sponsors</a>
+
+      <a href="index.html#theme">
+        Theme
+      </a>
+
+      <a href="index.html#speakers">
+        Speakers
+      </a>
+
+      <a href="index.html#sponsors">
+        Sponsors
+      </a>
+
     </div>
+
   </div>
+
 </nav>
 
+
+<!-- =========================================================
+     MAIN TICKET PAGE
+     ========================================================= -->
+
 <main class="ticket-page">
+
   <div class="ticket-wrap">
 
+    <!-- HEADER -->
+
     <header class="ticket-header">
-      <p class="eyebrow">TEDxWittyIntlSchoolYouth</p>
-      <h1>Get your tickets</h1>
-      <p>Metamorphosis · October 10, 2026</p>
+
+      <p class="eyebrow">
+        TEDxWittyIntlSchoolYouth
+      </p>
+
+      <h1>
+        Get your tickets
+      </h1>
+
+      <p>
+        Metamorphosis · October 10, 2026
+      </p>
+
     </header>
+
+
+    <!-- CARD -->
 
     <section class="ticket-card">
 
+
+      <!-- ===================================================
+           PAYMENT QR
+           =================================================== -->
+
       <div class="payment-box">
-        <div class="qr-placeholder" aria-label="Payment QR code placeholder">
+
+        <div
+          class="qr-placeholder"
+          aria-label="Payment QR code placeholder"
+        >
           QR CODE
         </div>
 
         <div>
-          <strong>Ticket price: ₹350 each</strong>
+          <strong>
+            Ticket price: ₹350 each
+          </strong>
         </div>
 
         <p class="payment-note">
@@ -277,14 +542,30 @@
         </p>
 
         <p class="payment-note">
-          The final payment QR code will be added when the payment system is connected.
+          The final payment QR code will be added here.
         </p>
+
       </div>
 
-      <form class="ticket-form" id="ticketForm">
+
+      <!-- ===================================================
+           FORM
+           =================================================== -->
+
+      <form
+        class="ticket-form"
+        id="ticketForm"
+      >
+
+
+        <!-- NAME -->
 
         <div class="field">
-          <label for="name">Full name</label>
+
+          <label for="name">
+            Full name
+          </label>
+
           <input
             id="name"
             name="name"
@@ -293,10 +574,18 @@
             autocomplete="name"
             required
           >
+
         </div>
 
+
+        <!-- EMAIL -->
+
         <div class="field">
-          <label for="email">Email address</label>
+
+          <label for="email">
+            Email address
+          </label>
+
           <input
             id="email"
             name="email"
@@ -305,10 +594,18 @@
             autocomplete="email"
             required
           >
+
         </div>
 
+
+        <!-- PHONE -->
+
         <div class="field">
-          <label for="phone">Phone number</label>
+
+          <label for="phone">
+            Phone number
+          </label>
+
           <input
             id="phone"
             name="phone"
@@ -317,10 +614,18 @@
             autocomplete="tel"
             required
           >
+
         </div>
 
+
+        <!-- QUANTITY -->
+
         <div class="field">
-          <label for="quantity">Number of tickets</label>
+
+          <label for="quantity">
+            Number of tickets
+          </label>
+
           <input
             id="quantity"
             name="quantity"
@@ -330,17 +635,38 @@
             value="1"
             required
           >
+
         </div>
+
+
+        <!-- AMOUNT -->
 
         <div class="amount-box">
-          <span class="amount-label">Total amount</span>
-          <span class="amount-value" id="totalAmount">₹350</span>
+
+          <span class="amount-label">
+            Total amount
+          </span>
+
+          <span
+            class="amount-value"
+            id="totalAmount"
+          >
+            ₹350
+          </span>
+
         </div>
 
+
+        <!-- SCREENSHOT -->
+
         <div class="field">
-          <label for="paymentScreenshot">Payment screenshot</label>
+
+          <label for="paymentScreenshot">
+            Payment screenshot
+          </label>
 
           <div class="upload-box">
+
             <input
               id="paymentScreenshot"
               name="paymentScreenshot"
@@ -349,11 +675,19 @@
               required
             >
 
-            <p class="upload-help">
+            <p
+              class="upload-help"
+              id="uploadHelp"
+            >
               Upload the screenshot showing your payment confirmation.
             </p>
+
           </div>
+
         </div>
+
+
+        <!-- SUBMIT -->
 
         <button
           type="submit"
@@ -363,336 +697,636 @@
           Submit Payment Proof
         </button>
 
+
+        <!-- MESSAGE -->
+
         <div
-          id="statusMessage"
-          class="status-message"
-          role="status"
-          aria-live="polite"
+          class="form-message"
+          id="formMessage"
+          role="alert"
         ></div>
+
 
       </form>
 
+
+      <!-- NOTE -->
+
       <p class="interface-note">
-        Your payment proof will be reviewed by the TEDx team. After verification,
-        your personalized ticket will be sent to the email address you provide.
+
+        Your payment proof will be reviewed by the TEDx team.
+        After verification, your personalized ticket will be sent
+        to the email address you provide.
+
       </p>
+
 
     </section>
 
-    <a href="index.html" class="ticket-back">
+
+    <!-- BACK -->
+
+    <a
+      href="index.html"
+      class="ticket-back"
+    >
       ← Back to event website
     </a>
 
   </div>
+
 </main>
 
-<script>
-  /* ================================
-     SUPABASE CONNECTION
-     ================================ */
 
-  const SUPABASE_URL = "https://uuazwqjhrrbxoeypizky.supabase.co";
+<!-- =========================================================
+     SUPABASE + TICKET LOGIC
+     ========================================================= -->
+
+<script>
+
+  /* =========================================================
+     SUPABASE CONFIG
+     ========================================================= */
+
+  const SUPABASE_URL =
+    "https://uuazwqjhrrbxoeypizky.supabase.co";
 
   const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_Xv9dLJJEGOG3Z3k_XeTdKA_X346sb7j";
 
-  const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
 
 
-  /* ================================
-     TICKET SETTINGS
-     ================================ */
+  /* =========================================================
+     CONSTANTS
+     ========================================================= */
 
   const PRICE_PER_TICKET = 350;
-  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
-  const quantityInput = document.getElementById("quantity");
-  const totalAmount = document.getElementById("totalAmount");
-  const ticketForm = document.getElementById("ticketForm");
-  const paymentScreenshot = document.getElementById("paymentScreenshot");
-  const submitButton = document.getElementById("submitButton");
-  const statusMessage = document.getElementById("statusMessage");
+  const STORAGE_BUCKET =
+    "payment-screenshots";
 
 
-  /* ================================
+  /* =========================================================
+     ELEMENTS
+     ========================================================= */
+
+  const quantityInput =
+    document.getElementById("quantity");
+
+  const totalAmount =
+    document.getElementById("totalAmount");
+
+  const ticketForm =
+    document.getElementById("ticketForm");
+
+  const paymentScreenshot =
+    document.getElementById("paymentScreenshot");
+
+  const uploadHelp =
+    document.getElementById("uploadHelp");
+
+  const submitButton =
+    document.getElementById("submitButton");
+
+  const formMessage =
+    document.getElementById("formMessage");
+
+
+  /* =========================================================
      AMOUNT CALCULATION
-     ================================ */
+     ========================================================= */
 
   function updateAmount() {
-    let quantity = Number(quantityInput.value) || 1;
 
-    quantity = Math.max(
-      1,
-      Math.min(20, Math.floor(quantity))
-    );
+    let quantity =
+      Number(quantityInput.value);
+
+    if (!Number.isFinite(quantity) || quantity < 1) {
+      quantity = 1;
+    }
+
+    if (quantity > 20) {
+      quantity = 20;
+    }
 
     quantityInput.value = quantity;
 
-    const amount = quantity * PRICE_PER_TICKET;
+    const amount =
+      quantity * PRICE_PER_TICKET;
 
     totalAmount.textContent =
-      "₹" + amount.toLocaleString("en-IN");
+      "₹" +
+      amount.toLocaleString("en-IN");
+
   }
 
-  quantityInput.addEventListener("input", updateAmount);
-  quantityInput.addEventListener("change", updateAmount);
+
+  quantityInput.addEventListener(
+    "input",
+    updateAmount
+  );
+
+  quantityInput.addEventListener(
+    "change",
+    updateAmount
+  );
 
   updateAmount();
 
 
-  /* ================================
-     FILE NAME DISPLAY
-     ================================ */
+  /* =========================================================
+     FILE DISPLAY
+     ========================================================= */
 
-  paymentScreenshot.addEventListener("change", function () {
-    const file = this.files && this.files[0];
+  paymentScreenshot.addEventListener(
+    "change",
+    function () {
 
-    if (file) {
-      this.closest(".upload-box")
-        .querySelector(".upload-help")
-        .textContent = file.name;
+      const file =
+        this.files && this.files[0];
+
+      if (!file) {
+
+        uploadHelp.textContent =
+          "Upload the screenshot showing your payment confirmation.";
+
+        return;
+      }
+
+      uploadHelp.textContent =
+        file.name;
+
     }
-  });
+  );
 
 
-  /* ================================
-     STATUS MESSAGE
-     ================================ */
+  /* =========================================================
+     MESSAGE HELPER
+     ========================================================= */
 
-  function showStatus(message, type) {
-    statusMessage.textContent = message;
-    statusMessage.className =
-      "status-message show " + type;
+  function showMessage(
+    message,
+    type
+  ) {
+
+    formMessage.textContent =
+      message;
+
+    formMessage.className =
+      "form-message show " + type;
+
   }
 
 
-  function clearStatus() {
-    statusMessage.textContent = "";
-    statusMessage.className = "status-message";
+  /* =========================================================
+     CUSTOM CURSOR
+     ========================================================= */
+
+  const cursorDot =
+    document.querySelector(".cursor-dot");
+
+  const cursorRing =
+    document.querySelector(".cursor-ring");
+
+  const cursorLabel =
+    document.querySelector(".cursor-label");
+
+
+  const isTouchDevice =
+    window.matchMedia(
+      "(pointer: coarse)"
+    ).matches;
+
+
+  if (isTouchDevice) {
+
+    document.body.classList.add(
+      "touch-device"
+    );
+
+  } else {
+
+    document.addEventListener(
+      "mousemove",
+      function (event) {
+
+        const x =
+          event.clientX;
+
+        const y =
+          event.clientY;
+
+        cursorDot.style.left =
+          x + "px";
+
+        cursorDot.style.top =
+          y + "px";
+
+        cursorRing.style.left =
+          x + "px";
+
+        cursorRing.style.top =
+          y + "px";
+
+        cursorLabel.style.left =
+          x + "px";
+
+        cursorLabel.style.top =
+          y + "px";
+
+      }
+    );
+
+
+    document
+      .querySelectorAll(
+        "a, button, input, label"
+      )
+      .forEach(function (element) {
+
+        element.addEventListener(
+          "mouseenter",
+          function () {
+
+            cursorRing.classList.add(
+              "hover"
+            );
+
+          }
+        );
+
+        element.addEventListener(
+          "mouseleave",
+          function () {
+
+            cursorRing.classList.remove(
+              "hover"
+            );
+
+          }
+        );
+
+      });
+
   }
 
 
-  /* ================================
-     SUBMIT TICKET
-     ================================ */
+  /* =========================================================
+     FORM SUBMISSION
+     ========================================================= */
 
-  ticketForm.addEventListener("submit", async function (event) {
+  ticketForm.addEventListener(
+    "submit",
+    async function (event) {
 
-    event.preventDefault();
-
-    clearStatus();
-
-    submitButton.disabled = true;
-    submitButton.textContent = "Uploading...";
+      event.preventDefault();
 
 
-    try {
+      /* -----------------------------------------------
+         CLEAR OLD MESSAGE
+         ----------------------------------------------- */
 
-      /* ------------------------------
-         GET FORM DATA
-         ------------------------------ */
+      formMessage.className =
+        "form-message";
+
+      formMessage.textContent =
+        "";
+
+
+      /* -----------------------------------------------
+         GET VALUES
+         ----------------------------------------------- */
 
       const fullName =
-        document.getElementById("name").value.trim();
+        document
+          .getElementById("name")
+          .value
+          .trim();
 
       const email =
-        document.getElementById("email").value.trim();
+        document
+          .getElementById("email")
+          .value
+          .trim();
 
       const phone =
-        document.getElementById("phone").value.trim();
+        document
+          .getElementById("phone")
+          .value
+          .trim();
 
       const quantity =
-        Math.floor(Number(quantityInput.value));
+        Number(quantityInput.value);
 
       const file =
         paymentScreenshot.files &&
         paymentScreenshot.files[0];
 
 
-      /* ------------------------------
+      /* -----------------------------------------------
          BASIC VALIDATION
-         ------------------------------ */
+         ----------------------------------------------- */
 
-      if (!fullName || !email || !phone) {
-        throw new Error(
-          "Please fill in all your details."
+      if (!fullName) {
+
+        showMessage(
+          "Please enter your full name.",
+          "error"
         );
+
+        return;
       }
 
-      if (!quantity || quantity < 1 || quantity > 20) {
-        throw new Error(
-          "Please enter a valid ticket quantity."
+
+      if (!email) {
+
+        showMessage(
+          "Please enter your email address.",
+          "error"
         );
+
+        return;
       }
+
+
+      if (!phone) {
+
+        showMessage(
+          "Please enter your phone number.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (
+        !Number.isInteger(quantity) ||
+        quantity < 1 ||
+        quantity > 20
+      ) {
+
+        showMessage(
+          "Please enter a valid ticket quantity.",
+          "error"
+        );
+
+        return;
+      }
+
 
       if (!file) {
-        throw new Error(
-          "Please upload your payment screenshot."
+
+        showMessage(
+          "Please upload your payment screenshot.",
+          "error"
         );
+
+        return;
       }
 
-      if (![
+
+      /* -----------------------------------------------
+         FILE TYPE CHECK
+         ----------------------------------------------- */
+
+      const allowedTypes = [
         "image/png",
         "image/jpeg",
         "image/webp"
-      ].includes(file.type)) {
-        throw new Error(
-          "Please upload a PNG, JPG, or WEBP image."
+      ];
+
+
+      if (
+        !allowedTypes.includes(
+          file.type
+        )
+      ) {
+
+        showMessage(
+          "Please upload a PNG, JPG, or WEBP image.",
+          "error"
         );
+
+        return;
       }
 
-      if (file.size > MAX_FILE_SIZE) {
-        throw new Error(
-          "Your payment screenshot must be smaller than 10 MB."
+
+      /* -----------------------------------------------
+         FILE SIZE CHECK
+         Maximum 10 MB
+         ----------------------------------------------- */
+
+      const maxFileSize =
+        10 * 1024 * 1024;
+
+
+      if (file.size > maxFileSize) {
+
+        showMessage(
+          "The payment screenshot must be smaller than 10 MB.",
+          "error"
         );
+
+        return;
       }
 
 
-      /* ------------------------------
+      /* -----------------------------------------------
          CALCULATE AMOUNT
-         ------------------------------ */
+         ----------------------------------------------- */
 
       const amount =
-        quantity * PRICE_PER_TICKET;
+        quantity *
+        PRICE_PER_TICKET;
 
 
-      /* ------------------------------
-         CREATE UNIQUE FILE PATH
-         ------------------------------ */
+      /* -----------------------------------------------
+         LOCK BUTTON
+         ----------------------------------------------- */
 
-      const fileExtension =
-        file.name.includes(".")
-          ? file.name.split(".").pop().toLowerCase()
-          : "jpg";
-
-      const uniqueFileName =
-        crypto.randomUUID() +
-        "." +
-        fileExtension;
-
-
-      const storagePath =
-        uniqueFileName;
-
-
-      /* ------------------------------
-         UPLOAD SCREENSHOT
-         ------------------------------ */
+      submitButton.disabled = true;
 
       submitButton.textContent =
-        "Uploading screenshot...";
-
-      const {
-        error: uploadError
-      } = await supabaseClient
-        .storage
-        .from("payment-screenshots")
-        .upload(storagePath, file, {
-          cacheControl: "3600",
-          upsert: false,
-          contentType: file.type
-        });
+        "Uploading payment proof...";
 
 
-      if (uploadError) {
-        console.error("Upload error:", uploadError);
+      let uploadedPath = null;
 
-        throw new Error(
-          "Could not upload your payment screenshot. Please try again."
+
+      try {
+
+
+        /* =============================================
+           CREATE UNIQUE FILE NAME
+           ============================================= */
+
+        const extension =
+          file.name
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+
+        const uniqueId =
+          crypto.randomUUID();
+
+
+        const filePath =
+          "payments/" +
+          uniqueId +
+          "." +
+          extension;
+
+
+        /* =============================================
+           UPLOAD SCREENSHOT
+           ============================================= */
+
+        const uploadResult =
+          await supabaseClient
+            .storage
+            .from(STORAGE_BUCKET)
+            .upload(
+              filePath,
+              file,
+              {
+                cacheControl: "3600",
+                upsert: false,
+                contentType: file.type
+              }
+            );
+
+
+        if (uploadResult.error) {
+
+          throw new Error(
+            "Payment screenshot upload failed: " +
+            uploadResult.error.message
+          );
+
+        }
+
+
+        uploadedPath =
+          filePath;
+
+
+        /* =============================================
+           CHANGE BUTTON TEXT
+           ============================================= */
+
+        submitButton.textContent =
+          "Submitting...";
+
+
+        /* =============================================
+           INSERT DATABASE RECORD
+           ============================================= */
+
+        const insertResult =
+          await supabaseClient
+            .from("ticket_submissions")
+            .insert([
+              {
+                full_name: fullName,
+
+                email: email,
+
+                phone: phone,
+
+                ticket_quantity: quantity,
+
+                amount: amount,
+
+                payment_screenshot: uploadedPath,
+
+                status: "pending"
+              }
+            ]);
+
+
+        if (insertResult.error) {
+
+          throw new Error(
+            "Ticket submission failed: " +
+            insertResult.error.message
+          );
+
+        }
+
+
+        /* =============================================
+           SUCCESS
+           ============================================= */
+
+        showMessage(
+          "Payment proof received successfully. " +
+          "Your payment will be reviewed by the TEDx team. " +
+          "Your ticket will be sent to your email after verification.",
+          "success"
         );
-      }
 
 
-      /* ------------------------------
-         SAVE TICKET SUBMISSION
-         ------------------------------ */
+        ticketForm.reset();
 
-      submitButton.textContent =
-        "Submitting...";
+        quantityInput.value = 1;
 
-      const {
-        error: databaseError
-      } = await supabaseClient
-        .from("ticket_submissions")
-        .insert({
-          full_name: fullName,
-          email: email,
-          phone: phone,
-          ticket_quantity: quantity,
-          amount: amount,
-          payment_screenshot: storagePath,
-          status: "pending"
-        });
+        updateAmount();
+
+        uploadHelp.textContent =
+          "Upload the screenshot showing your payment confirmation.";
 
 
-      if (databaseError) {
+      } catch (error) {
+
         console.error(
-          "Database error:",
-          databaseError
+          "Ticket submission error:",
+          error
         );
 
-        /*
-          If the database insert fails after the
-          screenshot uploaded, remove that screenshot
-          so we don't leave an unused file behind.
-        */
 
-        await supabaseClient
-          .storage
-          .from("payment-screenshots")
-          .remove([storagePath]);
+        /* =============================================
+           CLEANUP UPLOADED FILE IF DB FAILED
+           ============================================= */
 
-        throw new Error(
-          "Your payment screenshot was uploaded, but the submission could not be saved. Please try again."
+        if (uploadedPath) {
+
+          await supabaseClient
+            .storage
+            .from(STORAGE_BUCKET)
+            .remove([
+              uploadedPath
+            ]);
+
+        }
+
+
+        showMessage(
+          error.message ||
+          "Something went wrong. Please try again.",
+          "error"
         );
+
+
+      } finally {
+
+        submitButton.disabled =
+          false;
+
+        submitButton.textContent =
+          "Submit Payment Proof";
+
       }
 
-
-      /* ------------------------------
-         SUCCESS
-         ------------------------------ */
-
-      showStatus(
-        "Payment proof received successfully. " +
-        "Your payment will be reviewed by the TEDx team. " +
-        "Once verified, your personalized ticket will be sent to your email.",
-        "success"
-      );
-
-      ticketForm.reset();
-
-      quantityInput.value = 1;
-
-      totalAmount.textContent = "₹350";
-
-      paymentScreenshot
-        .closest(".upload-box")
-        .querySelector(".upload-help")
-        .textContent =
-        "Upload the screenshot showing your payment confirmation.";
-
-    } catch (error) {
-
-      console.error("Ticket submission error:", error);
-
-      showStatus(
-        error.message ||
-        "Something went wrong. Please try again.",
-        "error"
-      );
-
-    } finally {
-
-      submitButton.disabled = false;
-
-      submitButton.textContent =
-        "Submit Payment Proof";
     }
+  );
 
-  });
 </script>
 
 </body>
