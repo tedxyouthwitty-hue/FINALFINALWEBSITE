@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin — TEDxWittyIntlSchoolYouth</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{--bg:#000;--card:#0d0d0d;--card2:#151515;--line:#2a2a2a;--text:#fff;--muted:#8c8c8c;--red:#e62b1e;--green:#2ea44f;--amber:#d29922}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;line-height:1.5}
+  button,input,textarea{font:inherit}
+  .hidden{display:none!important}
+  .brand{font-weight:800;letter-spacing:-.02em}
+  .brand b{color:var(--red)}
+
+  /* Login */
+  #login{min-height:100vh;display:grid;place-items:center;padding:16px}
+  .login-card{width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:28px}
+  .login-card h1{font-size:20px;margin:0 0 4px}
+  .login-card p{color:var(--muted);margin:0 0 20px;font-size:14px}
+  label{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}
+  input,textarea{width:100%;background:#000;border:1px solid var(--line);color:#fff;border-radius:8px;padding:10px 12px}
+  input:focus,textarea:focus{outline:none;border-color:var(--red)}
+  .btn{border:0;border-radius:8px;padding:10px 16px;font-weight:600;cursor:pointer;color:#fff;background:var(--card2);border:1px solid var(--line)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn.red{background:var(--red);border-color:var(--red)}
+  .btn.green{background:var(--green);border-color:var(--green)}
+  .btn.full{width:100%;margin-top:20px}
+  .err{color:#ff6b6b;font-size:13px;margin-top:10px;min-height:18px}
+
+  /* App */
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(0,0,0,.92);backdrop-filter:blur(6px);z-index:5}
+  main{max-width:1200px;margin:0 auto;padding:20px 16px 60px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .stat .k{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+  .stat .v{font-size:24px;font-weight:700;margin-top:2px}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap}
+  .tab{background:transparent;border:1px solid var(--line);color:var(--muted);padding:7px 12px;border-radius:999px;cursor:pointer;font-size:14px}
+  .tab.active{background:#fff;color:#000;border-color:#fff}
+  .toolbar input{flex:1;min-width:200px}
+  .table-wrap{border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{color:var(--muted);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.05em;background:var(--card)}
+  tbody tr{cursor:pointer}
+  tbody tr:hover{background:var(--card2)}
+  .pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600;text-transform:capitalize}
+  .pill.pending{background:rgba(210,153,34,.15);color:var(--amber)}
+  .pill.verified{background:rgba(46,164,79,.15);color:#3fb950}
+  .pill.rejected{background:rgba(230,43,30,.15);color:#ff6b6b}
+  .empty{padding:40px;text-align:center;color:var(--muted)}
+
+  /* Drawer */
+  #overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10}
+  #drawer{position:fixed;top:0;right:0;height:100%;width:min(560px,100%);background:var(--card);border-left:1px solid var(--line);z-index:11;overflow-y:auto;padding:20px}
+  .drawer-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .drawer-head h2{margin:0;font-size:18px}
+  .x{background:none;border:0;color:var(--muted);font-size:26px;cursor:pointer;line-height:1}
+  dl{display:grid;grid-template-columns:120px 1fr;gap:8px 12px;margin:0 0 16px;font-size:14px}
+  dt{color:var(--muted)}
+  dd{margin:0;word-break:break-word}
+  .shot{background:#000;border:1px solid var(--line);border-radius:10px;min-height:120px;display:grid;place-items:center;overflow:hidden;margin-bottom:16px}
+  .shot img{max-width:100%;display:block}
+  .actions{display:flex;gap:10px;flex-wrap:wrap}
+  .actions .btn{flex:1}
+  .box{background:#000;border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:14px}
+  .box h3{margin:0 0 10px;font-size:15px}
+  #ticketPreview{width:100%;border-radius:8px;display:block;margin-bottom:12px}
+  .note{color:var(--muted);font-size:13px}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#fff;color:#000;padding:10px 16px;border-radius:8px;font-weight:600;z-index:20;max-width:90vw}
+  .toast.bad{background:#ff6b6b}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<section id="login">
+  <form class="login-card" id="loginForm">
+    <div class="brand" style="font-size:22px;margin-bottom:14px">TEDx<b>WittyIntlSchoolYouth</b></div>
+    <h1>Admin sign in</h1>
+    <p>Ticket verification panel</p>
+    <label for="email">Email</label>
+    <input id="email" type="email" autocomplete="username" required>
+    <label for="password">Password</label>
+    <input id="password" type="password" autocomplete="current-password" required>
+    <button class="btn red full" id="loginBtn" type="submit">Sign in</button>
+    <div class="err" id="loginErr"></div>
+  </form>
+</section>
+
+<!-- ============ APP ============ -->
+<section id="app" class="hidden">
+  <header>
+    <div class="brand">TEDx<b>WittyIntlSchoolYouth</b> <span style="color:var(--muted);font-weight:400">· Admin</span></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn" id="refreshBtn">Refresh</button>
+      <button class="btn" id="csvBtn">Export CSV</button>
+      <button class="btn" id="logoutBtn">Sign out</button>
+    </div>
+  </header>
+  <main>
+    <div class="stats">
+      <div class="stat"><div class="k">Pending</div><div class="v" id="sPending">0</div></div>
+      <div class="stat"><div class="k">Verified</div><div class="v" id="sVerified">0</div></div>
+      <div class="stat"><div class="k">Rejected</div><div class="v" id="sRejected">0</div></div>
+      <div class="stat"><div class="k">Tickets verified</div><div class="v" id="sTickets">0</div></div>
+      <div class="stat"><div class="k">Amount verified</div><div class="v" id="sAmount">₹0</div></div>
+    </div>
+    <div class="toolbar">
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-f="pending">Pending</button>
+        <button class="tab" data-f="verified">Verified</button>
+        <button class="tab" data-f="rejected">Rejected</button>
+        <button class="tab" data-f="all">All</button>
+      </div>
+      <input id="search" placeholder="Search name, email or phone">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Submitted</th><th>Name</th><th>Email</th><th>Phone</th><th>Qty</th><th>Amount</th><th>Status</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty hidden" id="empty">No submissions here.</div>
+    </div>
+  </main>
+</section>
+
+<!-- ============ DETAIL DRAWER ============ -->
+<div id="overlay" class="hidden"></div>
+<aside id="drawer" class="hidden">
+  <div class="drawer-head">
+    <h2 id="dName"></h2>
+    <button class="x" id="closeBtn" aria-label="Close">&times;</button>
+  </div>
+  <dl id="dInfo"></dl>
+  <div class="note" style="margin-bottom:6px">Payment screenshot (click to open full size)</div>
+  <div class="shot" id="dShot">Loading…</div>
+
+  <div id="pendingActions">
+    <div class="actions">
+      <button class="btn green" id="verifyBtn">Verify</button>
+      <button class="btn red" id="rejectBtn">Reject</button>
+    </div>
+
+    <div class="box hidden" id="verifyBox">
+      <h3>Ticket that will be emailed</h3>
+      <img id="ticketPreview" alt="Ticket preview">
+      <div class="actions">
+        <button class="btn" id="verifyCancel">Cancel</button>
+        <button class="btn green" id="verifyConfirm">Confirm &amp; send email</button>
+      </div>
+    </div>
+
+    <div class="box hidden" id="rejectBox">
+      <h3>Reason for rejection (included in the email)</h3>
+      <textarea id="rejectReason" rows="3" placeholder="e.g. Amount does not match, screenshot unclear, payment not received"></textarea>
+      <div class="actions" style="margin-top:10px">
+        <button class="btn" id="rejectCancel">Cancel</button>
+        <button class="btn red" id="rejectConfirm">Confirm &amp; send email</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+/* ================= CONFIG ================= */
+const SUPABASE_URL = "https://uuazwqjhrrbxoeypizky.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Xv9dLJJEGOG3Z3k_XeTdKA_X346sb7j";
+const BUCKET = "payment-screenshots";
+const FUNCTION_URL = SUPABASE_URL + "/functions/v1/ticket-decision";
+
+/* Ticket template: put your blank ticket image at assets/ticket-template.png.
+   x / y are positions in pixels on the template image. */
+const TICKET = {
+  template: "assets/ticket-template.png",
+  name: { x: 0.5, y: 0.55, size: 0.06, color: "#ffffff", align: "center", weight: "700" },
+  qty:  { x: 0.5, y: 0.68, size: 0.04, color: "#e62b1e", align: "center", weight: "700" },
+  id:   { x: 0.5, y: 0.78, size: 0.025, color: "#bbbbbb", align: "center", weight: "400" }
+  // x, y and size are fractions of the template width/height (0.5 = middle).
+};
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const $ = (id) => document.getElementById(id);
+let all = [], filter = "pending", current = null;
+
+/* ================= HELPERS ================= */
+function esc(s){return String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function fmtDate(d){return d ? new Date(d).toLocaleString("en-IN",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"}) : "—"}
+function inr(n){return "₹" + Number(n||0).toLocaleString("en-IN")}
+function toast(msg, bad){const t=document.createElement("div");t.className="toast"+(bad?" bad":"");t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),bad?6000:3000)}
+function shortId(id){return String(id).slice(0,8).toUpperCase()}
+
+/* ================= AUTH ================= */
+async function init(){
+  const { data } = await sb.auth.getSession();
+  if (data.session) showApp(); else showLogin();
+}
+function showLogin(){ $("login").classList.remove("hidden"); $("app").classList.add("hidden"); }
+function showApp(){ $("login").classList.add("hidden"); $("app").classList.remove("hidden"); load(); }
+
+$("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  $("loginErr").textContent = ""; $("loginBtn").disabled = true;
+  const { error } = await sb.auth.signInWithPassword({ email: $("email").value.trim(), password: $("password").value });
+  $("loginBtn").disabled = false;
+  if (error) { $("loginErr").textContent = "Wrong email or password."; return; }
+  $("password").value = "";
+  showApp();
+});
+$("logoutBtn").onclick = async () => { await sb.auth.signOut(); all = []; showLogin(); };
+
+/* ================= DATA ================= */
+async function load(){
+  const { data, error } = await sb.from("ticket_submissions").select("*").order("created_at", { ascending: false });
+  if (error) { toast("Could not load: " + error.message, true); return; }
+  all = data || [];
+  if (!all.length) { /* could also mean this login is not the admin account */ }
+  render();
+}
+
+function render(){
+  const by = s => all.filter(r => (r.status||"pending") === s);
+  const ver = by("verified");
+  $("sPending").textContent = by("pending").length;
+  $("sVerified").textContent = ver.length;
+  $("sRejected").textContent = by("rejected").length;
+  $("sTickets").textContent = ver.reduce((a,r)=>a+(r.ticket_quantity||0),0);
+  $("sAmount").textContent = inr(ver.reduce((a,r)=>a+(r.amount||0),0));
+
+  const q = $("search").value.trim().toLowerCase();
+  const list = all.filter(r =>
+    (filter === "all" || (r.status||"pending") === filter) &&
+    (!q || [r.full_name, r.email, r.phone].some(v => String(v||"").toLowerCase().includes(q)))
+  );
+  $("rows").innerHTML = list.map(r => `
+    <tr data-id="${r.id}">
+      <td>${fmtDate(r.created_at)}</td>
+      <td>${esc(r.full_name)}</td>
+      <td>${esc(r.email)}</td>
+      <td>${esc(r.phone)}</td>
+      <td>${r.ticket_quantity ?? ""}</td>
+      <td>${inr(r.amount)}</td>
+      <td><span class="pill ${esc(r.status||"pending")}">${esc(r.status||"pending")}</span></td>
+    </tr>`).join("");
+  $("empty").classList.toggle("hidden", list.length > 0);
+}
+
+$("tabs").addEventListener("click", e => {
+  const b = e.target.closest(".tab"); if (!b) return;
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  b.classList.add("active"); filter = b.dataset.f; render();
+});
+$("search").addEventListener("input", render);
+$("refreshBtn").onclick = load;
+$("rows").addEventListener("click", e => {
+  const tr = e.target.closest("tr"); if (tr) openDetail(tr.dataset.id);
+});
+
+/* ================= DETAIL ================= */
+async function openDetail(id){
+  current = all.find(r => r.id === id); if (!current) return;
+  const r = current;
+  $("dName").textContent = r.full_name || "Submission";
+  $("dInfo").innerHTML = `
+    <dt>Ticket ID</dt><dd>${shortId(r.id)}</dd>
+    <dt>Email</dt><dd>${esc(r.email)}</dd>
+    <dt>Phone</dt><dd>${esc(r.phone)}</dd>
+    <dt>Quantity</dt><dd>${r.ticket_quantity}</dd>
+    <dt>Amount</dt><dd>${inr(r.amount)}</dd>
+    <dt>Submitted</dt><dd>${fmtDate(r.created_at)}</dd>
+    <dt>Status</dt><dd><span class="pill ${esc(r.status||"pending")}">${esc(r.status||"pending")}</span></dd>
+    ${r.reviewed_at ? `<dt>Reviewed</dt><dd>${fmtDate(r.reviewed_at)}</dd>` : ""}
+    ${r.rejection_reason ? `<dt>Reason</dt><dd>${esc(r.rejection_reason)}</dd>` : ""}`;
+  $("verifyBox").classList.add("hidden"); $("rejectBox").classList.add("hidden");
+  $("pendingActions").classList.toggle("hidden", (r.status||"pending") !== "pending");
+  $("overlay").classList.remove("hidden"); $("drawer").classList.remove("hidden");
+
+  $("dShot").textContent = "Loading…";
+  if (!r.payment_screenshot) { $("dShot").textContent = "No screenshot uploaded"; return; }
+  const { data, error } = await sb.storage.from(BUCKET).createSignedUrl(r.payment_screenshot, 600);
+  if (error) { $("dShot").textContent = "Could not load screenshot"; return; }
+  $("dShot").innerHTML = `<a href="${data.signedUrl}" target="_blank" rel="noopener"><img src="${data.signedUrl}" alt="Payment screenshot"></a>`;
+}
+function closeDetail(){ $("overlay").classList.add("hidden"); $("drawer").classList.add("hidden"); current = null; }
+$("closeBtn").onclick = closeDetail; $("overlay").onclick = closeDetail;
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeDetail(); });
+
+/* ================= TICKET IMAGE ================= */
+function loadImage(src){
+  return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src + "?v=" + Date.now(); });
+}
+function drawText(ctx, text, o, W, H){
+  ctx.font = `${o.weight} ${Math.round(o.size * W)}px Helvetica, Arial, sans-serif`;
+  ctx.fillStyle = o.color; ctx.textAlign = o.align; ctx.textBaseline = "middle";
+  let size = Math.round(o.size * W);
+  while (ctx.measureText(text).width > W * 0.85 && size > 10) { size -= 2; ctx.font = `${o.weight} ${size}px Helvetica, Arial, sans-serif`; }
+  ctx.fillText(text, o.x * W, o.y * H);
+}
+async function makeTicket(r){
+  const c = document.createElement("canvas"), ctx = c.getContext("2d");
+  let W, H;
+  try {
+    const img = await loadImage(TICKET.template);
+    W = c.width = img.naturalWidth; H = c.height = img.naturalHeight;
+    ctx.drawImage(img, 0, 0);
+  } catch {
+    // Fallback design if no template has been uploaded yet
+    W = c.width = 1600; H = c.height = 800;
+    ctx.fillStyle = "#000"; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle = "#e62b1e"; ctx.fillRect(0,0,24,H);
+    ctx.font = "800 64px Helvetica, Arial"; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+    ctx.fillStyle = "#e62b1e"; ctx.fillText("TEDx", 90, 140);
+    ctx.fillStyle = "#fff"; ctx.fillText("WittyIntlSchoolYouth", 90 + ctx.measureText("TEDx").width, 140);
+    ctx.font = "400 40px Georgia, serif"; ctx.fillStyle = "#bbb"; ctx.fillText("Metamorphosis · October 10, 2026", 90, 210);
+  }
+  drawText(ctx, r.full_name || "", TICKET.name, W, H);
+  drawText(ctx, `Admits ${r.ticket_quantity} ${r.ticket_quantity == 1 ? "person" : "people"}`, TICKET.qty, W, H);
+  drawText(ctx, `Ticket ID: ${shortId(r.id)}`, TICKET.id, W, H);
+  return c.toDataURL("image/png");
+}
+
+/* ================= VERIFY / REJECT ================= */
+let ticketData = null;
+$("verifyBtn").onclick = async () => {
+  $("rejectBox").classList.add("hidden");
+  ticketData = await makeTicket(current);
+  $("ticketPreview").src = ticketData;
+  $("verifyBox").classList.remove("hidden");
+};
+$("verifyCancel").onclick = () => $("verifyBox").classList.add("hidden");
+$("rejectBtn").onclick = () => { $("verifyBox").classList.add("hidden"); $("rejectBox").classList.remove("hidden"); $("rejectReason").focus(); };
+$("rejectCancel").onclick = () => $("rejectBox").classList.add("hidden");
+
+async function decide(action, extra, btn){
+  const { data } = await sb.auth.getSession();
+  if (!data.session) { toast("Session expired, sign in again", true); showLogin(); return; }
+  btn.disabled = true; const old = btn.textContent; btn.textContent = "Sending…";
+  try {
+    const res = await fetch(FUNCTION_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + data.session.access_token, "apikey": SUPABASE_PUBLISHABLE_KEY },
+      body: JSON.stringify({ id: current.id, action, ...extra })
+    });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok || !out.ok) throw new Error(out.error || out.msg || ("Error " + res.status));
+    toast(action === "verify" ? "Verified — ticket emailed" : "Rejected — email sent");
+    closeDetail(); await load();
+  } catch (e) {
+    toast("Failed: " + e.message, true);
+  } finally { btn.disabled = false; btn.textContent = old; }
+}
+$("verifyConfirm").onclick = () => decide("verify", { ticketImage: ticketData }, $("verifyConfirm"));
+$("rejectConfirm").onclick = () => decide("reject", { reason: $("rejectReason").value }, $("rejectConfirm"));
+
+/* ================= CSV ================= */
+$("csvBtn").onclick = () => {
+  const cols = ["created_at","full_name","email","phone","ticket_quantity","amount","status","reviewed_at","rejection_reason","id"];
+  const lines = [cols.join(",")].concat(all.map(r => cols.map(c => `"${String(r[c] ?? "").replace(/"/g,'""')}"`).join(",")));
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([lines.join("\n")], { type: "text/csv" }));
+  a.download = "ticket-submissions.csv"; a.click();
+};
+
+init();
+</script>
+</body>
+</html>
