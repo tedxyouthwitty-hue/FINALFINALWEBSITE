@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Admin — TEDxWittyIntlSchoolYouth</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Tinos:wght@700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root{--bg:#000;--card:#0d0d0d;--card2:#151515;--line:#2a2a2a;--text:#fff;--muted:#8c8c8c;--red:#e62b1e;--green:#2ea44f;--amber:#d29922}
@@ -185,9 +185,13 @@ const FUNCTION_URL = SUPABASE_URL + "/functions/v1/ticket-decision";
    Positions are in pixels on the template. rotate: -90 = text runs bottom-to-top. */
 const TICKET = {
   template: "assets/ticket-template.png",
-  name: { x: 1512, y: 311, rotate: -90, maxLen: 530, size: 84, font: "Anton", weight: "400", color: "#ffffff", upper: true },
-  qty:  { x: 1570, y: 311, rotate: -90, maxLen: 500, size: 40, font: "Playfair Display", weight: "700", color: "#000000", upper: true },
-  id:   { x: 1712, y: 545, rotate: 0,   maxLen: 200, size: 15, font: "Arial", weight: "700", color: "#000000", upper: true }
+  // Big white vertical name (where "name of enterant" was)
+  name:  { x: 1512, y: 311, rotate: -90, maxLen: 520, size: 88, font: "Anton", weight: "400", color: "#ffffff", upper: false },
+  // Vertical ticket ID (where "SHARANYA MALAGI" was)
+  id:    { x: 1572, y: 311, rotate: -90, maxLen: 480, size: 40, font: "Tinos", weight: "700", color: "#000000", upper: true },
+  // Admits, below GATE 02 on the right panel
+  admitLabel: { x: 1624, y: 395, rotate: 0, maxLen: 200, size: 46, font: "Tinos", weight: "700", color: "#000000", upper: true, align: "left" },
+  admitNum:   { x: 1624, y: 490, rotate: 0, maxLen: 200, size: 112, font: "Tinos", weight: "700", color: "#000000", upper: true, align: "left" }
 };
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
@@ -314,20 +318,21 @@ function drawText(ctx, text, o){
   ctx.save();
   ctx.translate(o.x, o.y);
   ctx.rotate((o.rotate || 0) * Math.PI / 180);
-  ctx.fillStyle = o.color; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillStyle = o.color; ctx.textAlign = o.align || "center"; ctx.textBaseline = "middle";
   ctx.fillText(text, 0, 0);
   ctx.restore();
 }
 async function makeTicket(r){
-  try { await Promise.all([document.fonts.load('400 84px "Anton"'), document.fonts.load('700 40px "Playfair Display"')]); } catch {}
+  try { await Promise.all([document.fonts.load('400 84px "Anton"'), document.fonts.load('700 40px "Tinos"')]); } catch {}
   const img = await loadImage(TICKET.template);
   const c = document.createElement("canvas"), ctx = c.getContext("2d");
   c.width = img.naturalWidth; c.height = img.naturalHeight;
   ctx.drawImage(img, 0, 0);
   const q = Number(r.ticket_quantity) || 1;
   drawText(ctx, r.full_name || "", TICKET.name);
-  drawText(ctx, `Admits ${q} ${q === 1 ? "person" : "people"}`, TICKET.qty);
-  drawText(ctx, `ID ${shortId(r.id)}`, TICKET.id);
+  drawText(ctx, `Ticket ID ${shortId(r.id)}`, TICKET.id);
+  drawText(ctx, q === 1 ? "Admit" : "Admits", TICKET.admitLabel);
+  drawText(ctx, String(q).padStart(2, "0"), TICKET.admitNum);
   return c.toDataURL("image/png");
 }
 
