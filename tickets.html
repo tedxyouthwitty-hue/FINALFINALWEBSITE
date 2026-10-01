@@ -9,6 +9,8 @@
 </style>
 </head>
 <body>
+  <div class="cursor"></div>
+<div class="cursor-follower"></div>
 <nav class="nav"><div class="nav-inner"><a href="index.html" class="nav-logo">TEDx<span>WittyIntlSchoolYouth</span></a><div class="nav-links"><a href="index.html#theme">Theme</a><a href="index.html#speakers">Speakers</a><a href="index.html#sponsors">Sponsors</a></div></div></nav>
 <main class="ticket-page"><div class="ticket-wrap">
 <header class="ticket-header"><p class="eyebrow">TEDxWittyIntlSchoolYouth</p><h1>Get your tickets</h1><p>Metamorphosis · October 10, 2026</p></header>
@@ -32,5 +34,6 @@ const PRICE_PER_TICKET=350,q=document.getElementById("quantity"),total=document.
 function updateAmount(){const n=Math.max(1,Number(q.value)||1);q.value=n;total.textContent="₹"+(n*PRICE_PER_TICKET).toLocaleString("en-IN")}q.addEventListener("input",updateAmount);q.addEventListener("change",updateAmount);updateAmount();
 file.addEventListener("change",function(){const f=this.files&&this.files[0];if(f)this.closest(".upload-box").querySelector(".upload-help").textContent=f.name});
 form.addEventListener("submit",e=>{e.preventDefault();alert("The ticket submission interface is ready. Supabase connection and payment-proof submission will be added next.")});
+  <script src="script.js">
 </script>
 </body></html>
