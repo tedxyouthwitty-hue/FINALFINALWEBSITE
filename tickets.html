@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Tickets — TEDxWittyIntlSchoolYouth</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.ticket-page{min-height:100vh;background:#000;color:#fff;padding:130px 20px 70px}.ticket-wrap{width:min(760px,100%);margin:0 auto}.ticket-header{text-align:center;margin-bottom:42px}.ticket-header h1{margin:0 0 12px;font-size:clamp(42px,7vw,76px);line-height:.95;letter-spacing:-.04em;text-transform:uppercase}.ticket-header p{color:#aaa}.ticket-card{border:1px solid #222;background:#050505;padding:clamp(22px,5vw,42px)}.payment-box{text-align:center;border:1px dashed #444;padding:24px;margin-bottom:30px}.qr-placeholder{width:min(280px,72vw);aspect-ratio:1;margin:0 auto 18px;display:grid;place-items:center;border:2px dashed #555;color:#999;font-weight:700;letter-spacing:.14em}.ticket-form{display:grid;gap:20px}.field{display:grid;gap:8px}.field label{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#aaa}.field input{width:100%;border:1px solid #333;background:#080808;color:#fff;padding:15px 16px;font:inherit;outline:none;border-radius:0}.field input:focus{border-color:#e62b1e}.amount-box{display:flex;justify-content:space-between;padding:17px 0;border-top:1px solid #222;border-bottom:1px solid #222}.amount-label{color:#aaa}.amount-value{font-size:24px;font-weight:700}.upload-box{border:1px dashed #444;padding:24px 18px;text-align:center}.upload-box input{width:100%;color:#aaa}.upload-help{font-size:12px;color:#777}.submit-btn{width:100%;border:0;cursor:pointer;margin-top:6px}.ticket-back{display:block;width:fit-content;margin:28px auto 0;color:#999;font-size:13px}.interface-note{margin-top:20px;text-align:center;font-size:12px;line-height:1.6;color:#666}@media(max-width:600px){.ticket-page{padding:105px 14px 50px}.ticket-card{padding:20px 16px}.payment-box{padding:16px 12px}.amount-box{flex-direction:column;gap:5px}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-inner"><a href="index.html" class="nav-logo">TEDx<span>WittyIntlSchoolYouth</span></a><div class="nav-links"><a href="index.html#theme">Theme</a><a href="index.html#speakers">Speakers</a><a href="index.html#sponsors">Sponsors</a></div></div></nav>
+<main class="ticket-page"><div class="ticket-wrap">
+<header class="ticket-header"><p class="eyebrow">TEDxWittyIntlSchoolYouth</p><h1>Get your tickets</h1><p>Metamorphosis · October 10, 2026</p></header>
+<section class="ticket-card">
+<div class="payment-box"><div class="qr-placeholder">QR CODE</div><strong>Ticket price: ₹350 each</strong><p class="payment-note">Scan the QR code above to make your payment.</p><p class="payment-note">The final payment QR code will be added when the payment system is connected.</p></div>
+<form class="ticket-form" id="ticketForm">
+<div class="field"><label for="name">Full name</label><input id="name" name="name" type="text" placeholder="Enter your full name" required></div>
+<div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" placeholder="you@example.com" required></div>
+<div class="field"><label for="phone">Phone number</label><input id="phone" name="phone" type="tel" placeholder="Enter your phone number" required></div>
+<div class="field"><label for="quantity">Number of tickets</label><input id="quantity" name="quantity" type="number" min="1" max="20" value="1" required></div>
+<div class="amount-box"><span class="amount-label">Total amount</span><span class="amount-value" id="totalAmount">₹350</span></div>
+<div class="field"><label for="paymentScreenshot">Payment screenshot</label><div class="upload-box"><input id="paymentScreenshot" name="paymentScreenshot" type="file" accept="image/png,image/jpeg,image/webp" required><p class="upload-help">Upload the screenshot showing your payment confirmation.</p></div></div>
+<button type="submit" class="btn-primary btn-large submit-btn">Submit Payment Proof</button>
+</form>
+<p class="interface-note">Your payment proof will be reviewed by the TEDx team. After verification, your personalized ticket will be sent to the email address you provide.</p>
+</section>
+<a href="index.html" class="ticket-back">← Back to event website</a>
+</div></main>
+<script>
+const PRICE_PER_TICKET=350,q=document.getElementById("quantity"),total=document.getElementById("totalAmount"),form=document.getElementById("ticketForm"),file=document.getElementById("paymentScreenshot");
+function updateAmount(){const n=Math.max(1,Number(q.value)||1);q.value=n;total.textContent="₹"+(n*PRICE_PER_TICKET).toLocaleString("en-IN")}q.addEventListener("input",updateAmount);q.addEventListener("change",updateAmount);updateAmount();
+file.addEventListener("change",function(){const f=this.files&&this.files[0];if(f)this.closest(".upload-box").querySelector(".upload-help").textContent=f.name});
+form.addEventListener("submit",e=>{e.preventDefault();alert("The ticket submission interface is ready. Supabase connection and payment-proof submission will be added next.")});
+</script>
+</body></html>
