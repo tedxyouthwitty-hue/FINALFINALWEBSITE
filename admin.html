@@ -142,6 +142,12 @@
   <div class="note" style="margin-bottom:6px">Payment screenshot (click to open full size)</div>
   <div class="shot" id="dShot">Loading…</div>
 
+  <div id="doneActions" class="actions hidden" style="margin-bottom:6px">
+    <button class="btn green" id="resendBtn">Resend email</button>
+    <button class="btn" id="downloadBtn">Download ticket</button>
+  </div>
+  <div class="note hidden" id="doneNote" style="margin-top:8px">Download the ticket and send it yourself from Gmail if the buyer still can't find the email (ask them to check Spam and Promotions too).</div>
+
   <div id="pendingActions">
     <div class="actions">
       <button class="btn green" id="verifyBtn">Verify</button>
@@ -277,7 +283,12 @@ async function openDetail(id){
     ${r.reviewed_at ? `<dt>Reviewed</dt><dd>${fmtDate(r.reviewed_at)}</dd>` : ""}
     ${r.rejection_reason ? `<dt>Reason</dt><dd>${esc(r.rejection_reason)}</dd>` : ""}`;
   $("verifyBox").classList.add("hidden"); $("rejectBox").classList.add("hidden");
-  $("pendingActions").classList.toggle("hidden", (r.status||"pending") !== "pending");
+  const st = r.status || "pending";
+  $("pendingActions").classList.toggle("hidden", st !== "pending");
+  $("doneActions").classList.toggle("hidden", st === "pending");
+  $("doneNote").classList.toggle("hidden", st !== "verified");
+  $("downloadBtn").classList.toggle("hidden", st !== "verified");
+  $("resendBtn").textContent = st === "rejected" ? "Resend rejection email" : "Resend email";
   $("overlay").classList.remove("hidden"); $("drawer").classList.remove("hidden");
 
   $("dShot").textContent = "Loading…";
@@ -345,12 +356,31 @@ async function decide(action, extra, btn){
     });
     const out = await res.json().catch(() => ({}));
     if (!res.ok || !out.ok) throw new Error(out.error || out.msg || ("Error " + res.status));
-    toast(action === "verify" ? "Verified — ticket emailed" : "Rejected — email sent");
-    closeDetail(); await load();
+    const msg = { verify: "Verified — ticket emailed", reject: "Rejected — email sent", resend: "Email sent again" }[action];
+    toast(`${msg} to ${out.sentTo || current.email}`);
+    if (action !== "resend") { closeDetail(); await load(); }
   } catch (e) {
     toast("Failed: " + e.message, true);
   } finally { btn.disabled = false; btn.textContent = old; }
 }
+$("resendBtn").onclick = async () => {
+  if (!confirm(`Send the email again to ${current.email}?`)) return;
+  let extra = {};
+  if (current.status === "verified") {
+    try { extra.ticketImage = await makeTicket(current); }
+    catch { toast("Could not load the ticket template", true); return; }
+  }
+  decide("resend", extra, $("resendBtn"));
+};
+$("downloadBtn").onclick = async () => {
+  try {
+    const url = await makeTicket(current);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `TEDx-ticket-${(current.full_name||"guest").replace(/[^a-z0-9]+/gi,"-")}-${shortId(current.id)}.png`;
+    a.click();
+  } catch { toast("Could not load the ticket template", true); }
+};
 $("verifyConfirm").onclick = () => decide("verify", { ticketImage: ticketData }, $("verifyConfirm"));
 $("rejectConfirm").onclick = () => decide("reject", { reason: $("rejectReason").value }, $("rejectConfirm"));
 
