@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Tickets — TEDxWittyIntlSchoolYouth</title>
+<meta name="description" content="Ticket registration for TEDxWittyIntlSchoolYouth — Metamorphosis.">
+<link rel="stylesheet" href="style.css">
+
+<style>
+  .ticket-page {
+    min-height: 100vh;
+    background: #000;
+    color: #fff;
+    padding: 130px 20px 70px;
+  }
+
+  .ticket-wrap {
+    width: min(760px, 100%);
+    margin: 0 auto;
+  }
+
+  .ticket-header {
+    text-align: center;
+    margin-bottom: 42px;
+  }
+
+  .ticket-header .eyebrow {
+    margin-bottom: 12px;
+  }
+
+  .ticket-header h1 {
+    margin: 0 0 12px;
+    font-size: clamp(42px, 7vw, 76px);
+    line-height: .95;
+    letter-spacing: -.04em;
+    text-transform: uppercase;
+  }
+
+  .ticket-header p {
+    margin: 0;
+    color: rgba(255,255,255,.68);
+    font-size: 15px;
+  }
+
+  .ticket-card {
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.025);
+    padding: clamp(22px, 5vw, 42px);
+    box-shadow: 0 20px 80px rgba(0,0,0,.45);
+  }
+
+  .payment-box {
+    text-align: center;
+    border: 1px dashed rgba(255,255,255,.28);
+    padding: 24px;
+    margin-bottom: 30px;
+  }
+
+  .qr-placeholder {
+    width: min(280px, 72vw);
+    aspect-ratio: 1;
+    margin: 0 auto 18px;
+    display: grid;
+    place-items: center;
+    border: 2px dashed rgba(255,255,255,.35);
+    background:
+      linear-gradient(45deg, rgba(255,255,255,.035) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.035) 75%),
+      linear-gradient(45deg, rgba(255,255,255,.035) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.035) 75%);
+    background-size: 28px 28px;
+    background-position: 0 0, 14px 14px;
+    color: rgba(255,255,255,.55);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: .14em;
+  }
+
+  .payment-box strong {
+    color: #fff;
+  }
+
+  .payment-note {
+    margin: 6px 0 0;
+    color: rgba(255,255,255,.62);
+    font-size: 13px;
+  }
+
+  .ticket-form {
+    display: grid;
+    gap: 20px;
+  }
+
+  .field {
+    display: grid;
+    gap: 8px;
+  }
+
+  .field label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: rgba(255,255,255,.68);
+  }
+
+  .field input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(255,255,255,.18);
+    background: #080808;
+    color: #fff;
+    padding: 15px 16px;
+    font: inherit;
+    outline: none;
+    border-radius: 0;
+  }
+
+  .field input:focus {
+    border-color: #e62b1e;
+  }
+
+  .amount-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 17px 0;
+    border-top: 1px solid rgba(255,255,255,.12);
+    border-bottom: 1px solid rgba(255,255,255,.12);
+  }
+
+  .amount-label {
+    color: rgba(255,255,255,.65);
+    font-size: 13px;
+  }
+
+  .amount-value {
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .upload-box {
+    position: relative;
+    border: 1px dashed rgba(255,255,255,.28);
+    padding: 24px 18px;
+    text-align: center;
+  }
+
+  .upload-box input[type="file"] {
+    width: 100%;
+    color: rgba(255,255,255,.65);
+  }
+
+  .upload-help {
+    margin: 8px 0 0;
+    font-size: 12px;
+    color: rgba(255,255,255,.48);
+  }
+
+  .submit-btn {
+    width: 100%;
+    border: 0;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+
+  .ticket-back {
+    display: block;
+    width: fit-content;
+    margin: 28px auto 0;
+    color: rgba(255,255,255,.6);
+    text-decoration: none;
+    font-size: 13px;
+  }
+
+  .ticket-back:hover {
+    color: #fff;
+  }
+
+  .interface-note {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(255,255,255,.42);
+  }
+
+  @media (max-width: 600px) {
+    .ticket-page {
+      padding: 105px 14px 50px;
+    }
+
+    .ticket-card {
+      padding: 20px 16px;
+    }
+
+    .payment-box {
+      padding: 16px 12px;
+    }
+
+    .amount-box {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 5px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">TEDx<span>WittyIntlSchoolYouth</span></a>
+    <div class="nav-links">
+      <a href="index.html#theme">Theme</a>
+      <a href="index.html#speakers">Speakers</a>
+      <a href="index.html#sponsors">Sponsors</a>
+    </div>
+  </div>
+</nav>
+
+<main class="ticket-page">
+  <div class="ticket-wrap">
+
+    <header class="ticket-header">
+      <p class="eyebrow">TEDxWittyIntlSchoolYouth</p>
+      <h1>Get your tickets</h1>
+      <p>Metamorphosis · October 10, 2026</p>
+    </header>
+
+    <section class="ticket-card">
+
+      <div class="payment-box">
+        <div class="qr-placeholder" aria-label="Payment QR code placeholder">QR CODE</div>
+        <div><strong>Ticket price: ₹350 each</strong></div>
+        <p class="payment-note">Scan the QR code above to make your payment.</p>
+        <p class="payment-note">The final payment QR code will be added when the payment system is connected.</p>
+      </div>
+
+      <form class="ticket-form" id="ticketForm">
+
+        <div class="field">
+          <label for="name">Full name</label>
+          <input id="name" name="name" type="text" placeholder="Enter your full name" autocomplete="name" required>
+        </div>
+
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <input id="phone" name="phone" type="tel" placeholder="Enter your phone number" autocomplete="tel" required>
+        </div>
+
+        <div class="field">
+          <label for="quantity">Number of tickets</label>
+          <input id="quantity" name="quantity" type="number" min="1" max="20" value="1" required>
+        </div>
+
+        <div class="amount-box">
+          <span class="amount-label">Total amount</span>
+          <span class="amount-value" id="totalAmount">₹350</span>
+        </div>
+
+        <div class="field">
+          <label for="paymentScreenshot">Payment screenshot</label>
+          <div class="upload-box">
+            <input id="paymentScreenshot" name="paymentScreenshot" type="file" accept="image/png,image/jpeg,image/webp" required>
+            <p class="upload-help">Upload the screenshot showing your payment confirmation.</p>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary btn-large submit-btn">
+          Submit Payment Proof
+        </button>
+
+      </form>
+
+      <p class="interface-note">
+        Your payment proof will be reviewed by the TEDx team. After verification,
+        your personalized ticket will be sent to the email address you provide.
+      </p>
+
+    </section>
+
+    <a href="index.html" class="ticket-back">← Back to event website</a>
+
+  </div>
+</main>
+
+<script>
+  const PRICE_PER_TICKET = 350;
+  const quantityInput = document.getElementById("quantity");
+  const totalAmount = document.getElementById("totalAmount");
+  const ticketForm = document.getElementById("ticketForm");
+  const paymentScreenshot = document.getElementById("paymentScreenshot");
+
+  function updateAmount() {
+    const quantity = Math.max(1, Number(quantityInput.value) || 1);
+    quantityInput.value = quantity;
+    totalAmount.textContent = "₹" + (quantity * PRICE_PER_TICKET).toLocaleString("en-IN");
+  }
+
+  quantityInput.addEventListener("input", updateAmount);
+  quantityInput.addEventListener("change", updateAmount);
+  updateAmount();
+
+  paymentScreenshot.addEventListener("change", function () {
+    const file = this.files && this.files[0];
+    if (file) {
+      this.closest(".upload-box").querySelector(".upload-help").textContent = file.name;
+    }
+  });
+
+  ticketForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    alert(
+      "The ticket submission interface is ready. " +
+      "Supabase connection and payment-proof submission will be added next."
+    );
+  });
+</script>
+
+</body>
+</html>
