@@ -1443,3 +1443,236 @@ img{
     .theme-banner{margin-bottom:2.5rem}
     .theme-banner img{border-radius:4px}
 }
+
+
+/* =========================================================
+   DARK BUTTERFLY THEME — red glass butterflies on black
+   ========================================================= */
+
+body{background:#000}
+
+/* fixed ember dust layer */
+.ambient{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none
+}
+#emberCanvas{width:100%;height:100%;display:block}
+
+.hero{overflow:hidden}
+.section,.hero,.footer,.nav{isolation:isolate}
+.section-inner,.hero-inner,.footer-inner,.footer-bottom{position:relative;z-index:3}
+
+/* decorative art — screen blend makes the black disappear */
+.art{
+    position:absolute;
+    pointer-events:none;
+    user-select:none;
+    mix-blend-mode:screen;
+    max-width:none;
+    z-index:1
+}
+
+.art-hero-r{
+    right:-4%;
+    top:50%;
+    height:118%;
+    width:auto;
+    transform:translateY(-50%);
+    opacity:.9;
+    -webkit-mask-image:linear-gradient(to left,#000 35%,transparent 92%);
+            mask-image:linear-gradient(to left,#000 35%,transparent 92%);
+    animation:artFloat 14s ease-in-out infinite
+}
+.art-hero-l{
+    left:-6%;
+    bottom:-8%;
+    width:min(46vw,620px);
+    opacity:.55;
+    transform:scaleX(-1);
+    -webkit-mask-image:radial-gradient(ellipse at 40% 70%,#000 25%,transparent 72%);
+            mask-image:radial-gradient(ellipse at 40% 70%,#000 25%,transparent 72%)
+}
+
+.light-ray{
+    position:absolute;
+    top:-20%;
+    left:-10%;
+    width:55%;
+    height:120%;
+    background:radial-gradient(ellipse at 30% 20%,rgba(200,20,10,.38),rgba(120,5,0,.12) 40%,transparent 70%);
+    transform:rotate(-14deg);
+    filter:blur(20px);
+    z-index:0;
+    animation:rayPulse 9s ease-in-out infinite
+}
+.light-ray-r{left:auto;right:-10%;transform:rotate(14deg)}
+
+/* thin red orbit lines */
+.arcs{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:1;
+    overflow:visible
+}
+.arc{
+    fill:none;
+    stroke:#c4170c;
+    stroke-width:1.2;
+    vector-effect:non-scaling-stroke;
+    opacity:.55;
+    stroke-dasharray:6 0;
+}
+.arc-2{opacity:.3}
+.hero .arcs{animation:arcSpin 40s linear infinite;transform-origin:55% 45%}
+#what-is-tedx .arcs{opacity:.6;transform:scale(1.2) rotate(160deg)}
+
+.art-theme{
+    right:-8%;
+    bottom:-6%;
+    width:min(60vw,760px);
+    opacity:.55;
+    -webkit-mask-image:radial-gradient(ellipse at 60% 65%,#000 20%,transparent 70%);
+            mask-image:radial-gradient(ellipse at 60% 65%,#000 20%,transparent 70%)
+}
+
+.two-col-stat{position:relative}
+.art-x{
+    left:50%;
+    top:50%;
+    width:130%;
+    transform:translate(-50%,-55%);
+    opacity:.7;
+    z-index:0;
+    -webkit-mask-image:radial-gradient(circle,#000 30%,transparent 68%);
+            mask-image:radial-gradient(circle,#000 30%,transparent 68%);
+    animation:artFloat 11s ease-in-out infinite
+}
+.big-x,.stat-caption{position:relative;z-index:2}
+.big-x{text-shadow:0 0 40px rgba(230,43,30,.55)}
+
+.art-about{
+    left:-6%;
+    top:4%;
+    width:min(44vw,520px);
+    opacity:.5;
+    transform:scaleX(-1);
+    -webkit-mask-image:radial-gradient(ellipse,#000 25%,transparent 70%);
+            mask-image:radial-gradient(ellipse,#000 25%,transparent 70%)
+}
+
+.art-spk-l,.art-spk-r{
+    top:50%;
+    height:130%;
+    width:auto;
+    opacity:.55;
+    -webkit-mask-image:linear-gradient(to var(--fade,left),#000 20%,transparent 85%);
+            mask-image:linear-gradient(to var(--fade,left),#000 20%,transparent 85%)
+}
+.art-spk-r{right:-6%;transform:translateY(-50%)}
+.art-spk-l{left:-6%;transform:translateY(-50%) scaleX(-1)}
+.speakers-section{background:transparent}
+.reveal-text{text-shadow:0 0 60px rgba(230,43,30,.35)}
+
+.art-reg{
+    left:50%;
+    bottom:-30%;
+    width:min(90vw,900px);
+    transform:translateX(-50%);
+    opacity:.4;
+    -webkit-mask-image:radial-gradient(ellipse at 50% 60%,#000 20%,transparent 70%);
+            mask-image:radial-gradient(ellipse at 50% 60%,#000 20%,transparent 70%)
+}
+
+/* keep solid black sections from hiding the ember layer */
+.sponsors-section,.register-section,.particle-section{background:transparent}
+
+/* floating butterflies */
+.bg-fragments svg.bfly{
+    position:absolute;
+    width:46px;
+    height:46px;
+    z-index:2;
+    pointer-events:none;
+    filter:drop-shadow(0 0 10px rgba(230,43,30,.55));
+    overflow:visible
+}
+.bfly .wing{transform-box:fill-box}
+.bfly .wing-l{transform-origin:right center;animation:flapL .32s ease-in-out infinite alternate}
+.bfly .wing-r{transform-origin:left center;animation:flapR .32s ease-in-out infinite alternate}
+.bg-fragments svg.bf-1{top:22%;left:12%;width:38px;height:38px;animation:drift1 18s ease-in-out infinite}
+.bg-fragments svg.bf-2{top:68%;left:78%;width:28px;height:28px;opacity:.8;animation:drift2 22s ease-in-out infinite}
+.bg-fragments svg.bf-3{top:14%;right:28%;width:22px;height:22px;opacity:.6;animation:drift3 16s ease-in-out infinite}
+.bg-fragments svg.bf-4{bottom:18%;right:10%;width:34px;height:34px;animation:drift2 20s ease-in-out infinite}
+.bg-fragments svg.bf-5{top:20%;left:62%;width:30px;height:30px;animation:drift1 24s ease-in-out infinite}
+.bg-fragments svg.bf-6{top:24%;left:18%;width:30px;height:30px;animation:drift3 19s ease-in-out infinite}
+
+@keyframes flapL{from{transform:scaleX(1)}to{transform:scaleX(.25)}}
+@keyframes flapR{from{transform:scaleX(1)}to{transform:scaleX(.25)}}
+@keyframes drift1{
+    0%,100%{transform:translate(0,0) rotate(-8deg)}
+    25%{transform:translate(60px,-40px) rotate(6deg)}
+    50%{transform:translate(120px,10px) rotate(-4deg)}
+    75%{transform:translate(40px,50px) rotate(10deg)}
+}
+@keyframes drift2{
+    0%,100%{transform:translate(0,0) rotate(10deg)}
+    33%{transform:translate(-70px,-50px) rotate(-6deg)}
+    66%{transform:translate(-20px,-110px) rotate(8deg)}
+}
+@keyframes drift3{
+    0%,100%{transform:translate(0,0) rotate(0)}
+    50%{transform:translate(-50px,60px) rotate(-12deg)}
+}
+@keyframes artFloat{
+    0%,100%{translate:0 0}
+    50%{translate:0 -14px}
+}
+@keyframes rayPulse{
+    0%,100%{opacity:.85}
+    50%{opacity:1}
+}
+@keyframes arcSpin{
+    from{transform:rotate(0)}
+    to{transform:rotate(360deg)}
+}
+
+/* glassy theme banner with red glow */
+.theme-banner img{
+    border:1px solid rgba(230,43,30,.25);
+    box-shadow:0 0 0 1px rgba(0,0,0,.6),0 30px 80px rgba(150,10,5,.35)
+}
+
+/* subtle red glow on section titles */
+.section-title{text-shadow:0 0 30px rgba(230,43,30,.18)}
+
+/* nav: true black glass */
+.nav{background:rgba(0,0,0,.72);border-bottom-color:rgba(230,43,30,.18)}
+
+/* readability: gentle shadow behind body copy over art */
+.theme-copy p,.about-section p,.two-col-text p{text-shadow:0 1px 12px #000}
+
+@media(max-width:800px){
+    .art-hero-r{right:-35%;height:105%;opacity:.55}
+    .art-hero-l{width:80vw;opacity:.35}
+    .art-theme{width:110vw;opacity:.35}
+    .art-about{width:80vw;opacity:.35}
+    .art-spk-l{display:none}
+    .art-spk-r{right:-30%;opacity:.4}
+    .art-x{width:90%;max-width:360px}
+    .bg-fragments svg.bf-2,.bg-fragments svg.bf-3{display:none}
+}
+
+@media(prefers-reduced-motion:reduce){
+    .art,.light-ray,.hero .arcs,.bfly,.bfly .wing{animation:none!important}
+}
+
+/* tweaks */
+.hero-logo,.footer-logo{mix-blend-mode:lighten}
+.art-spk-l,.art-spk-r{height:150%;opacity:.8}
+.art-spk-r{right:-2%}
+.art-spk-l{left:-2%}
+.about-section .eyebrow{color:var(--red);font-family:var(--sans);font-size:.8rem;line-height:1.6;margin:0 0 .75rem}

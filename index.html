@@ -9,6 +9,27 @@
 </head>
 <body>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="wingGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff5a4a"/><stop offset=".55" stop-color="#b3150c"/><stop offset="1" stop-color="#3a0503"/>
+    </linearGradient>
+    <symbol id="bfly" viewBox="0 0 100 100">
+      <g class="wing wing-l">
+        <path d="M50,32 C46,20 30,14 20,20 C10,26 12,42 24,48 C34,53 46,48 50,38 Z" fill="url(#wingGrad)"/>
+        <path d="M50,42 C47,36 34,34 27,42 C21,49 26,60 36,60 C44,60 49,52 50,44 Z" fill="url(#wingGrad)" opacity=".85"/>
+      </g>
+      <g class="wing wing-r">
+        <path d="M50,32 C54,20 70,14 80,20 C90,26 88,42 76,48 C66,53 54,48 50,38 Z" fill="url(#wingGrad)"/>
+        <path d="M50,42 C53,36 66,34 73,42 C79,49 74,60 64,60 C56,60 51,52 50,44 Z" fill="url(#wingGrad)" opacity=".85"/>
+      </g>
+      <path d="M50,28 L50,62" stroke="#1a0201" stroke-width="2.4" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="ambient" aria-hidden="true"><canvas id="emberCanvas"></canvas></div>
+
 <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
 <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
 <div class="cursor-label" id="cursorLabel" aria-hidden="true">View</div>
@@ -54,13 +75,16 @@
 
 <section id="hero" class="hero">
   <div class="bg-fragments hero-bg" aria-hidden="true">
-    <svg viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
-      <polygon points="60,40 180,20 210,140 90,160" class="frag frag-1"></polygon>
-      <polygon points="620,60 740,90 700,210 580,180" class="frag frag-2"></polygon>
-      <polygon points="700,500 780,560 720,660 640,600" class="frag frag-3"></polygon>
-      <polygon points="40,560 130,600 90,700 10,660" class="frag frag-4"></polygon>
-      <circle cx="400" cy="400" r="180" class="frag-circle"></circle>
+    <div class="light-ray"></div>
+    <img src="assets/art-full.jpg" alt="" class="art art-hero-r">
+    <img src="assets/art-leaves.jpg" alt="" class="art art-hero-l">
+    <svg class="arcs" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+      <ellipse cx="560" cy="430" rx="620" ry="250" transform="rotate(-24 560 430)" class="arc arc-1"/>
+      <ellipse cx="420" cy="620" rx="700" ry="300" transform="rotate(-32 420 620)" class="arc arc-2"/>
     </svg>
+    <svg class="bfly bf-1" viewBox="0 0 100 100" aria-hidden="true"><use href="#bfly"/></svg>
+    <svg class="bfly bf-2" viewBox="0 0 100 100" aria-hidden="true"><use href="#bfly"/></svg>
+    <svg class="bfly bf-3" viewBox="0 0 100 100" aria-hidden="true"><use href="#bfly"/></svg>
   </div>
   <div class="hero-inner">
     <img src="assets/logo.jpeg" alt="TEDxWittyIntlSchoolYouth logo" class="hero-logo">
@@ -83,36 +107,44 @@
 <section id="theme" class="section theme-section">
   <div class="bg-fragments theme-bg" aria-hidden="true">
     <svg viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
-      <polygon points="700,80 780,140 730,220 650,170" class="frag frag-2"></polygon>
       <circle cx="120" cy="650" r="120" class="frag-circle-outline"></circle>
     </svg>
+    <img src="assets/art-leaves.jpg" alt="" class="art art-theme">
   </div>
   <figure class="theme-banner">
-    <img src="assets/theme-banner.jpg" alt="TEDxWittyIntlSchoolYouth — Metamorphosis · 10th Oct 2026 · Witty Intl School, Borivali W · 10:00 AM – 2:00 PM" width="1531" height="640" loading="lazy" decoding="async">
+    <img src="assets/theme-banner.jpg" alt="TEDxWittyIntlSchoolYouth — Metamorphosis · 10th Oct 2026 · Witty Intl School, Borivali W · 10:00 AM – 2:00 PM" width="1600" height="667" loading="lazy" decoding="async">
   </figure>
   <div class="section-inner narrow">
     <p class="eyebrow">This edition's theme</p>
     <h2 class="section-title">Metamorphosis</h2>
     <div class="theme-copy">
-      <p>Every idea worth sharing starts the same way — as something unfinished. A question without an answer. A habit someone decided to break. A student who stopped accepting things as they were and started asking what they could become.</p>
-      <p>Metamorphosis is that in-between moment made visible: the discomfort of outgrowing an old shape before the new one has fully formed. It's biological before it's metaphorical — nothing transforms without first coming apart. We chose this theme because every speaker on our stage, and every student in our audience, is somewhere in that process right now: unlearning, rebuilding, becoming someone they weren't a year ago.</p>
-      <p>This isn't a theme about arriving. It's about the change itself — messy, ongoing, and worth talking about honestly.</p>
+      <p>Every idea worth sharing starts somewhere uncertain. It could be a question, a doubt, a habit we want to change, or simply the feeling that things could be different. Metamorphosis is about the space between who we were and who we are becoming. It is that moment when an old way of thinking no longer feels right, but the next one has not quite taken shape yet.</p>
+      <p>We chose this theme because all of us are changing in some way. Every speaker on our stage has a story of something they questioned, challenged, or chose to see differently. The same is true for everyone sitting in the audience. We are all learning, unlearning, growing, and finding our own way forward.</p>
+      <p>This is not a theme about having everything figured out. It is about the process of getting there, through the questions we ask, the mistakes we make, and the moments that change how we see ourselves and the world around us. Metamorphosis is about becoming, and finding meaning in the process.</p>
     </div>
   </div>
 </section>
 
 <section id="what-is-tedx" class="section">
+  <div class="bg-fragments" aria-hidden="true">
+    <svg class="arcs" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+      <ellipse cx="560" cy="430" rx="620" ry="250" transform="rotate(-24 560 430)" class="arc arc-1"/>
+      <ellipse cx="420" cy="620" rx="700" ry="300" transform="rotate(-32 420 620)" class="arc arc-2"/>
+    </svg>
+  </div>
   <div class="section-inner">
     <p class="eyebrow">The format</p>
     <h2 class="section-title">What is TEDx?</h2>
     <div class="two-col">
       <div class="two-col-text">
-        <p>TED is a nonprofit devoted to spreading ideas, usually in the form of short, powerful talks. TEDx events are independently organized by local communities and licensed directly by TED, following the same format, spirit, and standards as the flagship TED conference — just built by and for the people closest to the ground.</p>
-        <p>The "x" stands for an independently organized event: TEDx events are produced under license, without TED's central organization directly involved in the content or curation, which means each one carries the voice and priorities of the community that built it.</p>
+        <p>TED is a nonprofit organisation dedicated to sharing ideas that can spark curiosity, challenge perspectives, and inspire meaningful conversations. TED talks are known for taking powerful ideas and making them accessible through concise, compelling storytelling.</p>
+        <p>TEDx brings this spirit to local communities. These events are independently organised under a licence from TED, following its standards while allowing each community to shape an event around its own people, ideas, and perspectives.</p>
+        <p>The “x” stands for independently organised TED event. TED provides the framework; the community provides the voice. That means a TEDx stage can give a platform to ideas that begin anywhere — including within our own schools and communities.</p>
       </div>
       <div class="two-col-stat">
+        <img src="assets/art-butterfly.jpg" alt="" class="art art-x" aria-hidden="true">
         <span class="big-x">x</span>
-        <p class="stat-caption">independently organized TED event</p>
+        <p class="stat-caption">independently organised TED event</p>
       </div>
     </div>
   </div>
@@ -123,16 +155,23 @@
     <svg viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
       <polygon points="30,300 110,260 150,340 70,380" class="frag frag-3"></polygon>
     </svg>
+    <img src="assets/art-butterfly.jpg" alt="" class="art art-about">
+    <svg class="bfly bf-4" viewBox="0 0 100 100" aria-hidden="true"><use href="#bfly"/></svg>
   </div>
   <div class="section-inner narrow">
     <p class="eyebrow">Our event</p>
     <h2 class="section-title">About TEDxWittyIntlSchoolYouth</h2>
-    <p>This is the first edition of TEDxWittyIntlSchoolYouth — a youth-led TEDx event bringing student voices, original ideas, and honest conversation to a single stage. Organized entirely by students, for students, this event exists to prove that meaningful ideas don't wait for a certain age or title to be worth hearing.</p>
-    <p>As a first edition, this is the starting point of something we intend to build year after year: a platform where young people are trusted to speak seriously about the things that matter to them.</p>
+    <p>This is the first edition of TEDxWittyIntlSchoolYouth, a youth-led TEDx event created to bring student voices, fresh ideas, and honest conversations onto one stage. Organised by students, for students, the event is built around a simple belief: a good idea does not need a certain age, title, or position to deserve to be heard.</p>
+    <p>As our first edition, this is the beginning of something we hope to see grow over the years. Our aim is to create a space where young people can speak openly about the ideas and experiences that matter to them, while giving others the chance to listen, question, and see things from a different perspective.</p>
   </div>
 </section>
 
 <section id="speakers" class="section speakers-section">
+  <div class="bg-fragments" aria-hidden="true">
+    <img src="assets/art-full.jpg" alt="" class="art art-spk-l">
+    <img src="assets/art-full.jpg" alt="" class="art art-spk-r">
+    <svg class="bfly bf-5" viewBox="0 0 100 100" aria-hidden="true"><use href="#bfly"/></svg>
+  </div>
   <div class="section-inner center">
     <p class="eyebrow">Speaker lineup</p>
     <h2 class="reveal-text">Yet to be<br>revealed</h2>
@@ -222,6 +261,11 @@
 </section>
 
 <section id="register" class="section register-section">
+  <div class="bg-fragments" aria-hidden="true">
+    <div class="light-ray light-ray-r"></div>
+    <img src="assets/art-leaves.jpg" alt="" class="art art-reg">
+    <svg class="bfly bf-6" viewBox="0 0 100 100" aria-hidden="true"><use href="#bfly"/></svg>
+  </div>
   <div class="section-inner center">
     <h2 class="section-title">Be there for it</h2>
     <p class="register-sub">Seats are limited. Register your interest below.</p>
@@ -259,5 +303,6 @@
 </footer>
 
 <script src="script.js"></script>
+<script src="ambient.js" defer></script>
 </body>
 </html>
