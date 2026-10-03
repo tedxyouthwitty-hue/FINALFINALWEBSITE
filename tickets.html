@@ -136,6 +136,95 @@
     letter-spacing: .14em;
   }
 
+  .qr-image {
+    display: block;
+    width: min(280px, 72vw);
+    height: auto;
+    margin: 0 auto 18px;
+    border-radius: 6px;
+  }
+
+  .upi-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 14px 0 16px;
+  }
+
+  .upi-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: rgba(255,255,255,.62);
+  }
+
+  .upi-id {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 17px;
+    color: #fff;
+    padding: 8px 12px;
+    border: 1px solid rgba(255,255,255,.18);
+    background: #080808;
+    user-select: all;
+  }
+
+  .copy-btn {
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #fff;
+    background: #e62b1e;
+    border: 1px solid #e62b1e;
+    padding: 9px 16px;
+    cursor: pointer;
+    min-height: 40px;
+  }
+
+  .copy-btn.copied {
+    background: #1f8f4e;
+    border-color: #1f8f4e;
+  }
+
+  .qty-stepper {
+    display: grid;
+    grid-template-columns: 56px 1fr 56px;
+    align-items: stretch;
+  }
+
+  .qty-stepper input {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .qty-btn {
+    font: inherit;
+    font-size: 24px;
+    line-height: 1;
+    color: #fff;
+    background: #141414;
+    border: 1px solid rgba(255,255,255,.18);
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .qty-btn:active {
+    background: #e62b1e;
+    border-color: #e62b1e;
+  }
+
+  .qty-btn:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+  }
+
   .payment-box strong {
     color: #fff;
   }
@@ -524,11 +613,25 @@
 
       <div class="payment-box">
 
-        <div
-          class="qr-placeholder"
-          aria-label="Payment QR code placeholder"
+        <img
+          class="qr-image"
+          src="assets/payment-qr.png"
+          alt="UPI payment QR code"
+          width="280"
+          height="280"
         >
-          QR CODE
+
+        <div class="upi-row">
+          <span class="upi-label">UPI ID</span>
+          <span class="upi-id" id="upiId">meershah@fam</span>
+          <button
+            type="button"
+            class="copy-btn"
+            id="copyUpiBtn"
+            aria-label="Copy UPI ID"
+          >
+            Copy
+          </button>
         </div>
 
         <div>
@@ -538,11 +641,7 @@
         </div>
 
         <p class="payment-note">
-          Scan the QR code above to make your payment.
-        </p>
-
-        <p class="payment-note">
-          The final payment QR code will be added here.
+          Scan the QR code or pay to the UPI ID above, then upload the payment screenshot below.
         </p>
 
       </div>
@@ -626,15 +725,33 @@
             Number of tickets
           </label>
 
-          <input
-            id="quantity"
-            name="quantity"
-            type="number"
-            min="1"
-            max="20"
-            value="1"
-            required
-          >
+          <div class="qty-stepper">
+            <button
+              type="button"
+              class="qty-btn"
+              id="qtyMinus"
+              aria-label="Decrease number of tickets"
+            >&minus;</button>
+
+            <input
+              id="quantity"
+              name="quantity"
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              maxlength="2"
+              value="1"
+              autocomplete="off"
+              required
+            >
+
+            <button
+              type="button"
+              class="qty-btn"
+              id="qtyPlus"
+              aria-label="Increase number of tickets"
+            >+</button>
+          </div>
 
         </div>
 
@@ -801,42 +918,126 @@
      AMOUNT CALCULATION
      ========================================================= */
 
-  function updateAmount() {
+  const MIN_QTY = 1;
+  const MAX_QTY = 20;
 
-    let quantity =
-      Number(quantityInput.value);
+  const qtyMinus =
+    document.getElementById("qtyMinus");
 
-    if (!Number.isFinite(quantity) || quantity < 1) {
-      quantity = 1;
-    }
+  const qtyPlus =
+    document.getElementById("qtyPlus");
 
-    if (quantity > 20) {
-      quantity = 20;
-    }
-
-    quantityInput.value = quantity;
-
-    const amount =
-      quantity * PRICE_PER_TICKET;
-
-    totalAmount.textContent =
-      "₹" +
-      amount.toLocaleString("en-IN");
-
+  function readQuantity() {
+    const n = parseInt(
+      String(quantityInput.value).replace(/[^0-9]/g, ""),
+      10
+    );
+    if (!Number.isFinite(n) || n < MIN_QTY) return MIN_QTY;
+    if (n > MAX_QTY) return MAX_QTY;
+    return n;
   }
 
+  function renderAmount(quantity) {
+    totalAmount.textContent =
+      "₹" +
+      (quantity * PRICE_PER_TICKET).toLocaleString("en-IN");
+    qtyMinus.disabled = quantity <= MIN_QTY;
+    qtyPlus.disabled = quantity >= MAX_QTY;
+  }
 
-  quantityInput.addEventListener(
-    "input",
-    updateAmount
-  );
+  // Called while typing: keep only digits, but let the field be
+  // empty so the user can delete and type a new number on mobile.
+  function onQuantityTyping() {
+    const digits =
+      String(quantityInput.value).replace(/[^0-9]/g, "");
+    if (digits !== quantityInput.value) {
+      quantityInput.value = digits;
+    }
+    if (digits !== "" && Number(digits) > MAX_QTY) {
+      quantityInput.value = String(MAX_QTY);
+    }
+    renderAmount(readQuantity());
+  }
 
-  quantityInput.addEventListener(
-    "change",
-    updateAmount
-  );
+  // Called when the field loses focus or before submit.
+  function updateAmount() {
+    const quantity = readQuantity();
+    quantityInput.value = String(quantity);
+    renderAmount(quantity);
+  }
+
+  function stepQuantity(delta) {
+    const quantity = Math.min(
+      MAX_QTY,
+      Math.max(MIN_QTY, readQuantity() + delta)
+    );
+    quantityInput.value = String(quantity);
+    renderAmount(quantity);
+  }
+
+  qtyMinus.addEventListener("click", function () {
+    stepQuantity(-1);
+  });
+
+  qtyPlus.addEventListener("click", function () {
+    stepQuantity(1);
+  });
+
+  quantityInput.addEventListener("input", onQuantityTyping);
+  quantityInput.addEventListener("change", updateAmount);
+  quantityInput.addEventListener("blur", updateAmount);
+  quantityInput.addEventListener("focus", function () {
+    quantityInput.select();
+  });
 
   updateAmount();
+
+
+  /* =========================================================
+     COPY UPI ID
+     ========================================================= */
+
+  const copyUpiBtn =
+    document.getElementById("copyUpiBtn");
+
+  const upiIdText =
+    document.getElementById("upiId").textContent.trim();
+
+  function fallbackCopy(text) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.top = "-1000px";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  copyUpiBtn.addEventListener("click", async function () {
+    let ok = false;
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(upiIdText);
+        ok = true;
+      }
+    } catch (e) {
+      ok = false;
+    }
+    if (!ok) ok = fallbackCopy(upiIdText);
+
+    copyUpiBtn.textContent = ok ? "Copied" : "Copy failed";
+    copyUpiBtn.classList.toggle("copied", ok);
+    setTimeout(function () {
+      copyUpiBtn.textContent = "Copy";
+      copyUpiBtn.classList.remove("copied");
+    }, 2000);
+  });
 
 
   /* =========================================================
@@ -1019,6 +1220,8 @@
           .getElementById("phone")
           .value
           .trim();
+
+      updateAmount();
 
       const quantity =
         Number(quantityInput.value);
