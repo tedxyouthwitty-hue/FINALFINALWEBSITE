@@ -33,9 +33,7 @@ addEventListener("resize",resize);resize();animate()})();
   function render(left){
     labels.forEach(el=>{
       el.classList.toggle("low",left>0&&left<=20);
-      el.innerHTML=left>0
-        ?'<span class="live-dot"></span><strong>'+left+'</strong> of 100 seats left'
-        :'All 100 seats are taken';
+      el.innerHTML=left>0?'':'All 100 seats are taken';
     });
     btns.forEach(b=>{
       if(left<=0){b.textContent="House full";b.classList.add("house-full");b.removeAttribute("href");b.setAttribute("aria-disabled","true")}

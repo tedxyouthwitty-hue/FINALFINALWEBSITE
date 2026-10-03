@@ -1187,10 +1187,7 @@
     ticketCardEl.hidden = false;
     houseFullEl.hidden = true;
 
-    seatsLeftEl.classList.toggle("low", left <= 20);
-    seatsLeftEl.innerHTML =
-      '<span class="live-dot"></span><strong>' + left +
-      "</strong> of " + TOTAL_SEATS + " seats left";
+    seatsLeftEl.innerHTML = "";
 
     MAX_QTY = Math.min(MAX_PER_ORDER, left);
     if (document.activeElement !== quantityInput) {
@@ -1709,7 +1706,7 @@
         showMessage(
           soldOut
             ? "Sorry, there aren't enough seats left for this booking. " +
-              "Please check the seats left and try again."
+              "Please reduce the number of tickets and try again."
             : (error.message ||
                "Something went wrong. Please try again."),
           "error"
