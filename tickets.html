@@ -280,6 +280,29 @@
     color: rgba(255,255,255,.7);
   }
 
+  .spam-notice {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    border: 1px solid #e62b1e;
+    border-left-width: 4px;
+    background: rgba(230,43,30,.08);
+    padding: 14px 16px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(255,255,255,.88);
+  }
+
+  .spam-notice .spam-icon {
+    flex: none;
+    font-size: 20px;
+    line-height: 1.2;
+  }
+
+  .spam-notice strong {
+    color: #fff;
+  }
+
   .payment-box strong {
     color: #fff;
   }
@@ -880,6 +903,19 @@
 
         <!-- SUBMIT -->
 
+        <!-- SPAM NOTICE -->
+
+        <div class="spam-notice" role="note">
+          <span class="spam-icon" aria-hidden="true">&#9993;</span>
+          <div>
+            <strong>Your ticket will arrive by email.</strong>
+            If you don't see it in your inbox, please check your
+            <strong>Spam</strong> and <strong>Promotions</strong> folders
+            and mark it as &ldquo;Not spam&rdquo;.
+          </div>
+        </div>
+
+
         <button
           type="submit"
           class="btn-primary btn-large submit-btn"
@@ -908,11 +944,6 @@
         Your payment proof will be reviewed by the TEDx team.
         After verification, your personalized ticket will be sent
         to the email address you provide.
-        <br><br>
-        <strong>Can't find the email?</strong> Please check your
-        <strong>Spam</strong> and <strong>Promotions</strong> folders.
-        If it's there, mark it as &ldquo;Not spam&rdquo; so you don't miss
-        any updates from us.
 
       </p>
 
