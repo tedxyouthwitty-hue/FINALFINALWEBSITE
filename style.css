@@ -1354,3 +1354,13 @@ img{
     pointer-events:none;
     cursor:default
 }
+
+.seats-left:empty{display:none}
+
+.limited-seats{
+    margin:.85rem auto 0;
+    font-size:.85rem;
+    font-weight:400;
+    letter-spacing:.04em;
+    color:#d9483d
+}

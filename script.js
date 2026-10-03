@@ -29,12 +29,14 @@ addEventListener("resize",resize);resize();animate()})();
   const KEY="sb_publishable_Xv9dLJJEGOG3Z3k_XeTdKA_X346sb7j";
   const btns=document.querySelectorAll("[data-ticket-btn]");
   const labels=document.querySelectorAll("[data-seats-left]");
+  const limited=document.querySelectorAll("[data-limited-seats]");
   if(!labels.length)return;
   function render(left){
     labels.forEach(el=>{
       el.classList.toggle("low",left>0&&left<=20);
       el.innerHTML=left>0?'':'All 100 seats are taken';
     });
+    limited.forEach(el=>{el.hidden=left<=0});
     btns.forEach(b=>{
       if(left<=0){b.textContent="House full";b.classList.add("house-full");b.removeAttribute("href");b.setAttribute("aria-disabled","true")}
       else{b.textContent="Get tickets";b.classList.remove("house-full");b.setAttribute("href","tickets.html");b.removeAttribute("aria-disabled")}
