@@ -641,6 +641,25 @@ img{
     overflow:hidden
 }
 
+.location-note strong{
+    color:#fff;
+    font-weight:600
+}
+
+.map-directions{
+    display:inline-block;
+    margin-top:1rem;
+    color:var(--red);
+    font-size:.95rem;
+    font-weight:600
+}
+
+.map-directions:hover{text-decoration:underline}
+
+@media (max-width:700px){
+    .map-placeholder{height:300px}
+}
+
 .map-fallback{
     position:absolute;
     inset:0;
