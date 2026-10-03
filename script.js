@@ -22,3 +22,35 @@ function resize(){canvas.width=canvas.parentElement.offsetWidth;canvas.height=ca
 canvas.addEventListener("mousemove",e=>{const r=canvas.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top});canvas.addEventListener("mouseleave",()=>{mouse.x=mouse.y=-9999});
 function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="#e62b1e";particles.forEach(p=>{const dx=p.x-mouse.x,dy=p.y-mouse.y,dist=Math.hypot(dx,dy),radius=85;if(dist<radius){const f=(radius-dist)/radius,a=Math.atan2(dy,dx);p.vx+=Math.cos(a)*f*4;p.vy+=Math.sin(a)*f*4}p.vx+=(p.baseX-p.x)*.04;p.vy+=(p.baseY-p.y)*.04;p.vx*=.82;p.vy*=.82;p.x+=p.vx;p.y+=p.vy;ctx.fillRect(p.x,p.y,2,2)});requestAnimationFrame(animate)}
 addEventListener("resize",resize);resize();animate()})();
+
+/* ===== Live seats-left counter (100 total) ===== */
+(function(){
+  const URL="https://uuazwqjhrrbxoeypizky.supabase.co/rest/v1/rpc/tickets_remaining";
+  const KEY="sb_publishable_Xv9dLJJEGOG3Z3k_XeTdKA_X346sb7j";
+  const btns=document.querySelectorAll("[data-ticket-btn]");
+  const labels=document.querySelectorAll("[data-seats-left]");
+  if(!labels.length)return;
+  function render(left){
+    labels.forEach(el=>{
+      el.classList.toggle("low",left>0&&left<=20);
+      el.innerHTML=left>0
+        ?'<span class="live-dot"></span><strong>'+left+'</strong> of 100 seats left'
+        :'All 100 seats are taken';
+    });
+    btns.forEach(b=>{
+      if(left<=0){b.textContent="House full";b.classList.add("house-full");b.removeAttribute("href");b.setAttribute("aria-disabled","true")}
+      else{b.textContent="Get tickets";b.classList.remove("house-full");b.setAttribute("href","tickets.html");b.removeAttribute("aria-disabled")}
+    });
+  }
+  async function refresh(){
+    try{
+      const r=await fetch(URL,{method:"POST",headers:{apikey:KEY,"Content-Type":"application/json"},body:"{}",cache:"no-store"});
+      if(!r.ok)return;
+      const n=Number(await r.json());
+      if(Number.isFinite(n))render(n);
+    }catch(e){}
+  }
+  refresh();
+  setInterval(refresh,20000);
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)refresh()});
+})();

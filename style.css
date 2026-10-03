@@ -1310,3 +1310,47 @@ img{
         height:160px
     }
 }
+
+
+/* =========================
+   SEATS LEFT COUNTER
+========================= */
+
+.seats-left{
+    margin:1rem auto 0;
+    font-size:.9rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.75);
+    min-height:1.4em
+}
+
+.seats-left strong{
+    color:#fff;
+    font-size:1.15rem
+}
+
+.seats-left .live-dot{
+    display:inline-block;
+    width:8px;height:8px;
+    border-radius:50%;
+    background:var(--red);
+    margin-right:.5rem;
+    vertical-align:middle;
+    animation:seatPulse 1.6s infinite
+}
+
+.seats-left.low strong{color:var(--red)}
+
+@keyframes seatPulse{
+    0%{box-shadow:0 0 0 0 rgba(230,43,30,.7)}
+    70%{box-shadow:0 0 0 8px rgba(230,43,30,0)}
+    100%{box-shadow:0 0 0 0 rgba(230,43,30,0)}
+}
+
+.btn-primary.house-full{
+    background:#333;
+    color:rgba(255,255,255,.8);
+    pointer-events:none;
+    cursor:default
+}
