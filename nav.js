@@ -24,7 +24,7 @@
   }
 
   var fill=document.getElementById("navProgressFill"),
-      stages=[].slice.call(document.querySelectorAll(".nav-progress-stage")),
+      stages=[],
       ticking=false;
   function update(){
     ticking=false;

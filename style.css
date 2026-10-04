@@ -1998,3 +1998,11 @@ body.menu-open{overflow:hidden}
 }
 .footer-sponsor-row{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:flex-start;align-items:center}
 .footer-sponsor-row .sponsor-slot.small{width:80px;height:80px;margin:0}
+
+/* Progress bar: plain thin red line (no stages) */
+
+.nav-progress{height:3px;margin:0;max-width:none}
+.nav-progress-track{top:0;margin-top:0;height:3px;background:transparent}
+@media(max-width:800px){.nav-progress{height:3px;margin:0}}
+.hero{padding-top:8rem}
+@media(max-width:800px){.hero{padding-top:6.5rem}html{scroll-padding-top:80px}}
