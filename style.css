@@ -1676,3 +1676,160 @@ body{background:#000}
 .art-spk-r{right:-2%}
 .art-spk-l{left:-2%}
 .about-section .eyebrow{color:var(--red);font-family:var(--sans);font-size:.8rem;line-height:1.6;margin:0 0 .75rem}
+
+
+/* =========================================================
+   UPDATE — Oct 2026: bigger nav, date, morph icon,
+   AS & A Level callout, photos, gallery
+========================================================= */
+
+/* 1. Nav tabs — much larger */
+.nav-inner{max-width:1400px;padding:1.15rem 2rem}
+.nav-logo{font-size:1.45rem}
+.nav-links{gap:2.6rem;font-size:1.3rem;font-weight:600;letter-spacing:.01em}
+.nav-cta{padding:.6rem 1.5rem;border-width:2px}
+
+/* 2. Event date — big and white */
+.hero-date{
+    color:#fff;
+    font-family:var(--serif);
+    font-size:clamp(1.6rem,3.4vw,2.4rem);
+    font-weight:700;
+    letter-spacing:.04em;
+    margin:.25rem 0 2.25rem;
+    text-shadow:0 0 24px rgba(230,43,30,.45)
+}
+
+/* 3. Egg → caterpillar → butterfly — bigger, white */
+.morph-corner{width:auto;height:auto;bottom:1.25rem;right:1.25rem;gap:.35rem}
+.morph-corner svg{width:130px;height:130px}
+.morph-corner svg{filter:drop-shadow(0 0 10px rgba(0,0,0,.9)) drop-shadow(0 0 18px rgba(230,43,30,.35))}
+.morph-stage.active .stage-fill{fill:#fff;opacity:1}
+.morph-stage.active .stage-leaf{stroke:#fff;stroke-width:2;opacity:.85}
+.morph-stage.active .stage-stroke{stroke:#fff;stroke-width:2.6;opacity:1}
+.morph-stage.active .stage-line{stroke:#000;stroke-width:1.6}
+.morph-stage.active .stage-highlight{fill:#000;opacity:.18}
+.morph-label{
+    font-size:1rem;
+    font-weight:700;
+    color:#fff;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    text-shadow:0 1px 8px #000
+}
+
+/* 4. Organised by AS & A Level students */
+.organised-by{
+    display:flex;
+    flex-direction:column;
+    gap:.15rem;
+    margin:0 0 2rem;
+    padding:1.4rem 1.6rem;
+    border-left:4px solid var(--red);
+    background:linear-gradient(90deg,rgba(230,43,30,.22),rgba(230,43,30,0));
+}
+.organised-by-kicker{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);font-weight:700}
+.organised-by-main{font-family:var(--serif);font-size:clamp(1.7rem,4vw,2.6rem);color:#fff;line-height:1.15}
+.organised-by-sub{font-size:1rem;color:var(--off-white)}
+.about-section p strong{color:#fff}
+
+/* 5. Photos — team + speakers */
+.person-photo{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:radial-gradient(circle at 50% 35%,#3a0a06,#0b0b0b 70%);
+    border:1px solid rgba(230,43,30,.55);
+    color:#fff;
+    font-family:var(--serif);
+    flex-shrink:0
+}
+.person-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+.oc-item{align-items:center;justify-content:flex-start;gap:1rem}
+.oc-item .oc-role{margin-left:auto}
+.oc-photo{width:64px;height:64px;border-radius:50%;font-size:1.25rem}
+
+.speaker-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1.75rem;
+    max-width:780px;
+    margin:3rem auto 0
+}
+.person-card{margin:0;display:flex;flex-direction:column;align-items:center;gap:.8rem}
+.speaker-card .person-photo{width:100%;aspect-ratio:4/5;border-radius:4px;font-size:3.5rem;color:rgba(255,255,255,.55)}
+.person-card figcaption{display:flex;flex-direction:column;align-items:center;gap:.1rem}
+.person-name{font-family:var(--serif);font-size:1.2rem;color:#fff}
+.person-role{font-size:.8rem;color:var(--muted)}
+
+/* 6. Gallery — Speaker Round 2 */
+.gallery-sub{color:var(--off-white);margin:-.75rem 0 2rem}
+.gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:1rem
+}
+.gallery-item{
+    position:relative;
+    aspect-ratio:4/3;
+    padding:0;
+    border:1px solid var(--border);
+    border-radius:4px;
+    overflow:hidden;
+    background:radial-gradient(circle at 50% 40%,#2a0705,#0a0a0a 75%);
+    color:var(--muted);
+    font:inherit;
+    font-size:.85rem
+}
+.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.gallery-item.has-img:hover img{transform:scale(1.05)}
+.gallery-item.has-img:hover{border-color:var(--red)}
+.gallery-item.no-img{display:flex;align-items:center;justify-content:center}
+
+.lightbox{
+    position:fixed;inset:0;z-index:200;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(0,0,0,.92);padding:2rem
+}
+.lightbox[hidden]{display:none}
+.lightbox img{max-width:min(92vw,1400px);max-height:86vh;object-fit:contain;border:1px solid var(--border)}
+.lightbox-close,.lightbox-nav{
+    position:absolute;background:none;border:0;color:#fff;
+    font-size:3rem;line-height:1;padding:.5rem 1rem
+}
+.lightbox-close{top:1rem;right:1rem}
+.lightbox-prev{left:.5rem;top:50%;transform:translateY(-50%)}
+.lightbox-next{right:.5rem;top:50%;transform:translateY(-50%)}
+.lightbox-close:hover,.lightbox-nav:hover{color:var(--red)}
+body.touch-device .lightbox-close,body.touch-device .lightbox-nav{cursor:pointer}
+
+/* Responsive */
+@media(max-width:1000px){
+    .nav-links{gap:1.6rem;font-size:1.1rem}
+    .nav-logo{font-size:1.15rem}
+}
+@media(max-width:800px){
+    .nav-inner{flex-direction:column;gap:.6rem;padding:.8rem 1rem}
+    .nav-logo{font-size:1.1rem}
+    .nav-links{width:100%;justify-content:center;flex-wrap:wrap;gap:.6rem 1.4rem;font-size:1.05rem}
+    .nav-cta{padding:.4rem 1rem}
+    .hero{padding-top:9rem}
+    .morph-corner{transform:none;width:auto;height:auto;bottom:.75rem;right:.75rem}
+    .morph-corner svg{width:84px;height:84px}
+    .morph-label{font-size:.8rem}
+    .speaker-grid{grid-template-columns:repeat(2,1fr);gap:1rem}
+    .gallery-grid{grid-template-columns:repeat(2,1fr);gap:.6rem}
+}
+@media(max-width:480px){
+    .nav-links{gap:.5rem 1rem;font-size:.95rem}
+    .nav-logo{font-size:1rem}
+    .hero{padding-top:8.5rem}
+    .hero-date{font-size:1.5rem}
+    .oc-photo{width:52px;height:52px;font-size:1rem}
+    .organised-by{padding:1.1rem 1.1rem}
+}
+html{scroll-padding-top:90px}
+@media(max-width:800px){html{scroll-padding-top:120px}}
