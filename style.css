@@ -1833,3 +1833,168 @@ body.touch-device .lightbox-close,body.touch-device .lightbox-nav{cursor:pointer
 }
 html{scroll-padding-top:90px}
 @media(max-width:800px){html{scroll-padding-top:120px}}
+
+
+/* =========================================================
+   UPDATE 2 — full-screen menu, metamorphosis progress bar,
+   powered-by tag, contact icons, 3rd sponsor
+========================================================= */
+
+/* Nav bar */
+.nav-inner{flex-direction:row;gap:1rem}
+.nav-actions{display:flex;align-items:center;gap:1rem}
+.nav .nav-cta{
+    background:var(--red);
+    border:2px solid var(--red);
+    color:#fff;
+    font-weight:700;
+    font-size:1.15rem;
+    padding:.55rem 1.4rem;
+    border-radius:3px
+}
+.nav .nav-cta:hover{background:#ff3b2c;border-color:#ff3b2c}
+.menu-toggle{
+    display:flex;align-items:center;gap:.75rem;
+    background:transparent;border:2px solid rgba(255,255,255,.85);border-radius:3px;
+    color:#fff;font:inherit;font-weight:700;font-size:1.15rem;letter-spacing:.06em;text-transform:uppercase;
+    padding:.55rem 1.1rem;position:relative;z-index:160
+}
+.menu-toggle:hover{border-color:var(--red);color:var(--red)}
+.menu-toggle-icon{display:flex;flex-direction:column;gap:6px;width:24px}
+.menu-toggle-icon span{display:block;height:2px;background:currentColor;transition:transform .3s}
+body.menu-open .menu-toggle-icon span:first-child{transform:translateY(4px) rotate(45deg)}
+body.menu-open .menu-toggle-icon span:last-child{transform:translateY(-4px) rotate(-45deg)}
+body.menu-open .nav{z-index:170;background:transparent;border-bottom-color:transparent;backdrop-filter:none}
+body.menu-open .nav-progress,body.menu-open .nav .nav-cta{opacity:0;pointer-events:none}
+body.menu-open{overflow:hidden}
+
+/* Metamorphosis progress bar */
+.nav-progress{position:relative;height:30px;margin:0 2rem;max-width:1400px;transition:opacity .3s}
+@media(min-width:1464px){.nav-progress{margin:0 auto}}
+.nav-progress-track{position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;background:rgba(255,255,255,.12)}
+.nav-progress-fill{height:100%;background:linear-gradient(90deg,var(--red),#ff6a5c);transform:scaleX(0);transform-origin:left center;box-shadow:0 0 10px rgba(230,43,30,.7)}
+.nav-progress-stage{
+    position:absolute;top:50%;transform:translate(-50%,-50%);
+    display:flex;align-items:center;gap:.35rem;
+    padding:0 .5rem;background:#000;
+    color:rgba(255,255,255,.35);font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    transition:color .4s
+}
+.nav-progress-stage:first-of-type{transform:translate(0,-50%);padding-left:0}
+.nav-progress-stage svg{width:20px;height:20px;fill:currentColor;overflow:visible;transition:transform .4s}
+.nav-progress-stage svg use{fill:currentColor}
+.nav-progress-stage.reached{color:#fff}
+.nav-progress-stage.current{color:#fff}
+.nav-progress-stage.current svg{transform:scale(1.3);filter:drop-shadow(0 0 6px rgba(230,43,30,.9))}
+.nav-progress-stage.current span{color:var(--red)}
+
+/* Full-screen menu */
+.menu-overlay{
+    position:fixed;inset:0;z-index:150;
+    background:radial-gradient(ellipse at 70% 30%,#2a0604 0%,#000 65%);
+    display:flex;flex-direction:column;justify-content:center;
+    padding:7rem 8vw 3rem;
+    opacity:0;transition:opacity .35s;overflow-y:auto
+}
+.menu-overlay.open{opacity:1}
+.menu-overlay[hidden]{display:none}
+.menu-overlay-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.menu-bfly{position:absolute;filter:drop-shadow(0 0 14px rgba(230,43,30,.6))}
+.menu-bfly.mb-1{width:120px;height:120px;right:12%;top:18%;animation:drift1 18s ease-in-out infinite}
+.menu-bfly.mb-2{width:60px;height:60px;right:30%;bottom:18%;opacity:.7;animation:drift2 22s ease-in-out infinite}
+.menu-bfly.mb-3{width:40px;height:40px;right:6%;bottom:35%;opacity:.5;animation:drift3 16s ease-in-out infinite}
+.menu-links{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.2rem 4rem;max-width:1100px;position:relative}
+.menu-links li{
+    opacity:0;transform:translateY(24px);
+    transition:opacity .45s,transform .45s
+}
+.menu-overlay.open .menu-links li{opacity:1;transform:none}
+.menu-overlay.open .menu-links li:nth-child(1){transition-delay:.05s}
+.menu-overlay.open .menu-links li:nth-child(2){transition-delay:.1s}
+.menu-overlay.open .menu-links li:nth-child(3){transition-delay:.15s}
+.menu-overlay.open .menu-links li:nth-child(4){transition-delay:.2s}
+.menu-overlay.open .menu-links li:nth-child(5){transition-delay:.25s}
+.menu-overlay.open .menu-links li:nth-child(6){transition-delay:.3s}
+.menu-overlay.open .menu-links li:nth-child(7){transition-delay:.35s}
+.menu-overlay.open .menu-links li:nth-child(8){transition-delay:.4s}
+.menu-links a{
+    display:flex;align-items:baseline;gap:1.1rem;
+    font-family:var(--serif);font-size:clamp(2.2rem,5.2vw,4.4rem);line-height:1.2;color:#fff;
+    padding:.25rem 0;transition:color .25s,transform .25s
+}
+.menu-links a:hover{color:var(--red);transform:translateX(10px)}
+.menu-num{font-family:var(--sans);font-size:.9rem;font-weight:700;color:var(--red);letter-spacing:.08em;min-width:1.8rem}
+.menu-footer{display:flex;align-items:center;gap:2rem;flex-wrap:wrap;margin-top:3rem;position:relative;color:var(--off-white)}
+.menu-footer p{margin:0;font-size:1rem}
+.menu-footer .btn-primary{margin:0}
+
+/* Hero: powered-by tag beside the logo */
+.hero-brand{display:flex;align-items:center;justify-content:center;gap:1.4rem;margin:0 auto 1.5rem}
+.hero-brand .hero-logo{margin:0}
+.powered-by{
+    display:flex;flex-direction:column;align-items:center;gap:.3rem;
+    padding:.55rem .75rem;border-left:1px solid rgba(255,255,255,.25)
+}
+.powered-by-label{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.powered-by img{width:54px;height:54px;object-fit:cover;border-radius:6px}
+.powered-by-name{font-size:.75rem;font-weight:600;color:#fff;white-space:nowrap}
+
+/* Footer contact icons */
+.contact-icons{display:flex;gap:.75rem;margin-bottom:1rem}
+.footer-contact a.contact-icon{
+    display:flex;align-items:center;justify-content:center;
+    width:46px;height:46px;margin:0;border-radius:50%;
+    border:1px solid rgba(230,43,30,.6);color:#fff;transition:background .25s,border-color .25s
+}
+.footer-contact a.contact-icon:hover{background:var(--red);border-color:var(--red);color:#fff}
+.contact-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.contact-icon svg .fill{fill:currentColor;stroke:none}
+
+/* Sponsor row with 3 logos */
+.sponsor-row{flex-wrap:wrap;justify-content:center}
+.sponsor-slot img{object-fit:contain;width:100%;height:100%}
+.footer-sponsor-row{flex-wrap:wrap}
+
+/* Hero spacing for nav + progress bar */
+.hero{padding-top:9.5rem}
+
+/* Tablet / phone */
+@media(max-width:800px){
+    .nav-inner{flex-direction:row;padding:.7rem 1rem}
+    .nav-logo{font-size:1rem}
+    .nav .nav-cta{font-size:.95rem;padding:.45rem .9rem}
+    .menu-toggle{font-size:.95rem;padding:.45rem .8rem;gap:.5rem}
+    .nav-progress{margin:0 1rem;height:26px}
+    .nav-progress-stage span{display:none}
+    .nav-progress-stage.current span{display:inline}
+    .nav-progress-stage svg{width:16px;height:16px}
+    .hero{padding-top:8rem}
+    html{scroll-padding-top:100px}
+    .menu-overlay{padding:6rem 1.5rem 2rem;justify-content:flex-start}
+    .menu-links{grid-template-columns:1fr;gap:0}
+    .menu-links a{font-size:2.1rem}
+    .menu-bfly.mb-1{width:70px;height:70px;top:auto;bottom:10%;right:8%}
+    .menu-footer{margin-top:2rem;gap:1rem}
+    .menu-footer p{font-size:.85rem}
+    .footer-inner{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+    .nav-logo{font-size:.82rem}
+    .nav-actions{gap:.5rem}
+    .menu-toggle-text{display:none}
+    .menu-toggle{padding:.5rem .6rem}
+    .nav .nav-cta{font-size:.85rem;padding:.42rem .7rem}
+    .hero-brand{gap:.8rem}
+    .hero-brand .hero-logo{width:170px}
+    .powered-by{padding:.4rem .5rem}
+    .powered-by img{width:40px;height:40px}
+    .powered-by-label{font-size:.55rem}
+    .powered-by-name{font-size:.65rem}
+    .menu-links a{font-size:1.85rem}
+}
+@media(prefers-reduced-motion:reduce){
+    .menu-links li{transition:none}
+    .menu-bfly{animation:none!important}
+}
+.footer-sponsor-row{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:flex-start;align-items:center}
+.footer-sponsor-row .sponsor-slot.small{width:80px;height:80px;margin:0}
