@@ -78,25 +78,22 @@
 
   if (!inApp && missing.length === 0 && !force) return;
 
-  // Let people who already chose "continue anyway" use the site this session
-  try { if (sessionStorage.getItem('bc_dismissed') === '1' && !force) return; } catch (e) {}
-
   // ---- 4. Build the redirect link ----------------------------------------
   var noProto = href.replace(/^https?:\/\//, '');
-  var openUrl, btnText;
+  var buttons = []; // [label, url, isPrimary]
 
   if (isAndroid) {
-    // Android intent: opens Chrome directly; falls back to the same URL
-    openUrl = 'intent://' + noProto + '#Intent;scheme=https;package=com.android.chrome;' +
-      'S.browser_fallback_url=' + encodeURIComponent(href) + ';end';
-    btnText = 'Open in Chrome';
+    // Android intent: opens Chrome directly; if Chrome is missing, the
+    // fallback URL opens in the phone's default browser
+    buttons.push(['Open in Chrome', 'intent://' + noProto +
+      '#Intent;scheme=https;package=com.android.chrome;' +
+      'S.browser_fallback_url=' + encodeURIComponent(href) + ';end', true]);
   } else if (isIOS) {
-    // iOS: googlechromes:// opens Chrome if installed. Safari is the safe fallback.
-    openUrl = 'googlechromes://' + noProto;
-    btnText = 'Open in Chrome';
+    // iOS: Safari is always installed; Chrome only if the user has it
+    buttons.push(['Open in Safari', 'x-safari-' + href, true]);
+    buttons.push(['Open in Chrome', 'googlechromes://' + noProto, false]);
   } else {
-    openUrl = href;
-    btnText = 'Reload page';
+    buttons.push(['Reload page', href, true]);
   }
 
   var reason = appName
@@ -125,12 +122,17 @@
       'border-radius:10px;font-size:16px;font-weight:700;text-decoration:none;border:0;cursor:pointer;margin-bottom:10px;}' +
       '#bc-box .bc-primary{background:#e62b1e;color:#fff;}' +
       '#bc-box .bc-secondary{background:#2a2a2a;color:#fff;}' +
-      '#bc-box .bc-skip{background:none;border:0;color:#888;font-size:13px;text-decoration:underline;cursor:pointer;margin-top:6px;}' +
       '#bc-box .bc-small{font-size:13px;color:#999;}';
 
     var style = document.createElement('style');
     style.appendChild(document.createTextNode(css));
     (document.head || document.documentElement).appendChild(style);
+
+    var btnHtml = '';
+    for (var b = 0; b < buttons.length; b++) {
+      btnHtml += '<a class="bc-btn ' + (buttons[b][2] ? 'bc-primary' : 'bc-secondary') +
+        '" href="' + buttons[b][1] + '">' + buttons[b][0] + '</a>';
+    }
 
     var o = document.createElement('div');
     o.id = 'bc-overlay';
@@ -139,26 +141,14 @@
     o.innerHTML =
       '<div id="bc-box">' +
         '<div class="bc-x">TEDx</div>' +
-        '<h2>Please open this in Chrome</h2>' +
+        '<h2>' + (isIOS ? 'Please open this in Safari or Chrome' : 'Please open this in Chrome') + '</h2>' +
         '<p>' + reason + ' Ticket booking and payments may not work here.</p>' +
-        '<a class="bc-btn bc-primary" id="bc-open" href="' + openUrl + '">' + btnText + '</a>' +
+        btnHtml +
         '<button class="bc-btn bc-secondary" id="bc-copy" type="button">Copy link</button>' +
         '<p class="bc-small">' + manual + '</p>' +
-        '<button class="bc-skip" id="bc-skip" type="button">Continue here anyway</button>' +
       '</div>';
     document.body.appendChild(o);
     document.documentElement.style.overflow = 'hidden';
-
-    // iOS: if Chrome isn't installed, nothing happens — offer Safari after a moment
-    if (isIOS) {
-      document.getElementById('bc-open').addEventListener('click', function () {
-        setTimeout(function () {
-          if (document.visibilityState === 'visible') {
-            window.location.href = 'x-safari-' + href; // works in many iOS 17+ in-app browsers
-          }
-        }, 1500);
-      });
-    }
 
     document.getElementById('bc-copy').addEventListener('click', function () {
       var btn = this;
@@ -175,11 +165,6 @@
       }
     });
 
-    document.getElementById('bc-skip').addEventListener('click', function () {
-      try { sessionStorage.setItem('bc_dismissed', '1'); } catch (e) {}
-      o.parentNode.removeChild(o);
-      document.documentElement.style.overflow = '';
-    });
   }
 
   if (document.body) show();
