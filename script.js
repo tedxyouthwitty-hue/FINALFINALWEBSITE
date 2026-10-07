@@ -1,4 +1,4 @@
-const EVENT_DATE=new Date("2026-10-10T09:00:00");
+const EVENT_DATE=new Date("2026-10-10T10:00:00+05:30");
 function updateCountdown(){const now=new Date(),diff=EVENT_DATE-now;const d=document.getElementById("cd-days"),h=document.getElementById("cd-hours"),m=document.getElementById("cd-mins"),s=document.getElementById("cd-secs");if(!d)return;if(diff<=0){d.textContent=h.textContent=m.textContent=s.textContent="00";return}d.textContent=String(Math.floor(diff/86400000)).padStart(2,"0");h.textContent=String(Math.floor(diff/3600000)%24).padStart(2,"0");m.textContent=String(Math.floor(diff/60000)%60).padStart(2,"0");s.textContent=String(Math.floor(diff/1000)%60).padStart(2,"0")}
 updateCountdown();setInterval(updateCountdown,1000);
 
