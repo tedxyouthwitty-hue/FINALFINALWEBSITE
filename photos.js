@@ -2,7 +2,7 @@
    To add a photo, upload it with the matching file name:
    - Team:     assets/team/<first-last>.jpg   (e.g. assets/team/meer-shah.jpg)
    - Speakers: assets/speakers/guest-1..3.jpg and student-1..5.jpg
-   - Gallery:  assets/gallery/round2-1.jpg … round2-12.jpg
+   - Gallery:  assets/gallery/round2-1.jpg … round2-9.jpg (3x3)
    Anything not uploaded yet shows a placeholder. */
 (function(){
   function load(src, ok, fail){
